@@ -122,6 +122,13 @@ div.sheet.project>div.sort_types {
   text-rendering: optimizeLegibility;
   display: inline-block;
 }
+div.sheet.project>div.description {
+  margin: 0;
+  padding: 30px 30px 0px 30px;
+  position: relative;
+  text-rendering: optimizeLegibility;
+  display: inline-block;
+}
 div.sheet.project>header>div.title {
   border-bottom: 1px solid #dedede;
   margin-bottom: 20px;
@@ -174,4 +181,44 @@ div.sort_types a.sort_type p {
   line-height: 1.2em;
   word-wrap: break-word;
   color: #aa9c84;
+}
+.container :hover {
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.tabnav {
+  margin: 10px 0;
+  border-bottom: 1px solid #DDD;
+}
+.tabnav-tabs li.selected {
+  border-color: #DDD;
+  border-radius: 3px 3px 0 0;
+  background-color: white;
+  color: #333;
+  font-weight: bold;
+}
+.tabnav-tabs li {
+  display: inline-block;
+  margin-bottom: -1px;
+  padding: 8px 12px;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  font-size: 14px;
+  color: #666;
+  text-decoration: none;
+}
+.tabnav .tabnav-tabs > li {
+  display: inline-block;
+}
+.tabnav .tabnav-tabs > li:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+.tabnav  > ul {
+  margin: 0;
+  padding-left: 1em;
 }
