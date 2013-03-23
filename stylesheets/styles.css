@@ -129,6 +129,13 @@ div.sheet.project>div.description {
   text-rendering: optimizeLegibility;
   display: inline-block;
 }
+div.sheet.project>div.algo_test {
+  margin: 0;
+  padding: 30px 30px 0px 30px;
+  position: relative;
+  text-rendering: optimizeLegibility;
+  display: inline-block;
+}
 div.sheet.project>header>div.title {
   border-bottom: 1px solid #dedede;
   margin-bottom: 20px;
@@ -221,4 +228,39 @@ div.sort_types a.sort_type p {
 .tabnav  > ul {
   margin: 0;
   padding-left: 1em;
+}
+.submit {
+  clear: both;
+  font-size: 13px;
+  min-height: 18px;
+  vertical-align: baseline;
+  margin: 10px 0 0;
+}
+input[type=submit] {
+  vertical-align: baseline;
+  margin-top: 0;
+  border-color: #016c43;
+  background-color: #00a264;
+  font-size: 12px;
+  line-height: 17px;
+  padding: 3px 12px;
+  color: #fff;
+  -webkit-box-shadow: 0px 1px 0px #016c43;
+  -moz-box-shadow: 0px 1px 0px #016c43;
+  box-shadow: 0px 1px 0px #016c43;
+  margin: -1px 0 0;
+  background: #00a264;
+  color: #000;
+  border: 1px solid #ccc;
+  vertical-align: top;
+  text-decoration: none;
+  -webkit-appearance: none;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  cursor: pointer;
+  float: right;
+}
+input[type=submit]:hover {
+  background: #fff;
 }

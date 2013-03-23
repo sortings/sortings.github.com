@@ -9,7 +9,9 @@
     <link rel="shortcut icon" href="../images/favicon.png" type="image/png">
 
     <script type="text/javascript" src="../javascripts/jquery-1.9.1.js"></script>
+
     <script type="text/javascript" src="../javascripts/main.js"></script>
+    <script type="text/javascript" src="../javascripts/sort.js"></script>
 
     <!-- Подсветка кода -->
     <script type="text/javascript" src="../javascripts/shCore.js"></script>
@@ -17,6 +19,10 @@
     <script type="text/javascript" src="../javascripts/shBrushCSharp.js"></script>
     <link href="../stylesheets/shCore.css" rel="stylesheet" type="text/css" />
     <link href="../stylesheets/shThemeDefault.css" rel="stylesheet" type="text/css" />
+
+    <!-- Диаграммы и графики -->
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   </head>
@@ -97,12 +103,19 @@
         </div>
 
       </div>
-
+      <div class="algo_test">
+        <div id="50Bubble" style="min-width: 900px; height: 400px; margin: 0 auto"></div>
+        <div class="submit">
+          <input class="50Bubble" name="commit" type="submit" value="Пересчитать">
+        </div>
+        <div style="clear: both;height:20px"></div>
+      </div>
     </div>
   </div>
 
   <script type="text/javascript">
-    SyntaxHighlighter.all()
+    SyntaxHighlighter.all();
+    (new Sort).bindBubble();
   </script>
   </body>
 </html>
