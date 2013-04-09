@@ -264,3 +264,19 @@ input[type=submit] {
 input[type=submit]:hover {
   background: #fff;
 }
+.separator {
+  clear: both;
+  height: 20px;
+}
+h4 {
+  font-size: 18px;
+  line-height: 18px;
+  font-weight: normal;
+  color: #900;
+  -webkit-font-smoothing: antialiased;
+}
+.algo-stat {
+  min-width: 900px;
+  height: 400px;
+  margin: 0 auto;
+}
