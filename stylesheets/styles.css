@@ -234,7 +234,7 @@ div.sort_types a.sort_type p {
   font-size: 13px;
   min-height: 18px;
   vertical-align: baseline;
-  margin: 10px 0 0;
+  margin: 10px 20px 0;
 }
 input[type=submit] {
   vertical-align: baseline;
@@ -250,7 +250,6 @@ input[type=submit] {
   box-shadow: 0px 1px 0px #016c43;
   margin: -1px 0 0;
   background: #00a264;
-  color: #000;
   border: 1px solid #ccc;
   vertical-align: top;
   text-decoration: none;
@@ -263,6 +262,7 @@ input[type=submit] {
 }
 input[type=submit]:hover {
   background: #fff;
+  color: #000;
 }
 .separator {
   clear: both;
@@ -299,4 +299,7 @@ h4 {
 }
 .algo-complexity td:first-child {
   border-left: 0px;
+}
+.algo_test .algo-complexity {
+  width: 900px;
 }

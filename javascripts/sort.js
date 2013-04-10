@@ -13,7 +13,7 @@ Sort.prototype = {
   bindBubble : function() {
     var bubbles = {"100bubble" : 100, "500bubble" : 500, "5000bubble" : 5000, "50000bubble" : 50000};
     for (var bubble in bubbles) {
-      draw_chart(bubble, bubbles[bubble], "bubble");
+      draw_chart(bubble, bubbles[bubble], "bubble", true);
       $('.' + bubble).on('click', function() {
         var id = $(this).attr("class")
         var n = bubbles[id];
@@ -150,7 +150,7 @@ function date_reversed(n) {
   return date_ordered(n).reverse();
 }
 
-function draw_chart(id, n, sortName) {
+function draw_chart(id, n, sortName, isComputed) {
   $('#' + id).highcharts({
       chart: {
           type: 'column'
@@ -159,7 +159,7 @@ function draw_chart(id, n, sortName) {
           text: 'Скорость сортировки различных типов массивов на ' + n + ' элементов'
       },
       subtitle: {
-          text: 'лалала'
+          text: typeof isComputed !== 'undefined' ? 'При проведении серии испытаний' : 'Лишь единичное испытание для каждого вида (ради демонстрации)'
       },
       xAxis: {
           categories: [
