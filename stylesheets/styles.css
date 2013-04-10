@@ -303,3 +303,21 @@ h4 {
 .algo_test .algo-complexity {
   width: 900px;
 }
+.algo-stat-table {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid #DDD;
+  border-top: 1px solid #DDD;
+  font-size: 14px;
+  color: #333;
+}
+.algo-stat-block {
+  -moz-box-shadow: 0 0 7px 0 rgba(0,0,0,0.18);
+  -webkit-box-shadow: 0 0 7px 0 rgba(0,0,0,0.18);
+  box-shadow: 0 0 7px 0 rgba(0,0,0,0.18);
+  margin-bottom: 15px;
+}
+.algo-stat-table-block {
+  width: 900px;
+  height: 105px;
+}

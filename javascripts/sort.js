@@ -14,6 +14,7 @@ Sort.prototype = {
     var bubbles = {"100bubble" : 100, "500bubble" : 500, "5000bubble" : 5000, "50000bubble" : 50000};
     for (var bubble in bubbles) {
       draw_chart(bubble, bubbles[bubble], "bubble", true);
+      createStatTable(bubble, bubbles[bubble], "bubble");
       $('.' + bubble).on('click', function() {
         var id = $(this).attr("class")
         var n = bubbles[id];
@@ -21,6 +22,7 @@ Sort.prototype = {
         /* сказать пользователю, что приложение все ещё живо */
 
         setTimeout(function () {
+          hideStatTable(id);
           runTests("bubble", n);
         }, 0);
 
@@ -69,6 +71,7 @@ function benchmark(funcName, params, paramsType) {
       console.log("ready!")
       readyCount = 0;
       draw_chart(params.length + funcName, params.length, funcName);
+      updateStatTable(params.length + funcName, params.length, funcName);
       console.log(params.length + ": { from0to9 : [" + Sort.averageValues[funcName][params.length]["from0to9"][0] + ", " + Sort.averageValues[funcName][params.length]["from0to9"][1] + ", " + Sort.averageValues[funcName][params.length]["from0to9"][2] +"], integers : [" + Sort.averageValues[funcName][params.length]["integers"][0] + ", " + Sort.averageValues[funcName][params.length]["integers"][1] + ", " + Sort.averageValues[funcName][params.length]["integers"][2] + "], strings : [" + Sort.averageValues[funcName][params.length]["strings"][0] + ", " + Sort.averageValues[funcName][params.length]["strings"][1] + ", " + Sort.averageValues[funcName][params.length]["strings"][2] + "], dates: [" + Sort.averageValues[funcName][params.length]["dates"][0] + ", " + Sort.averageValues[funcName][params.length]["dates"][1] + ", " + Sort.averageValues[funcName][params.length]["dates"][2] + "] }");
     }
   }, 0);
@@ -149,7 +152,44 @@ function date_ordered(n) {
 function date_reversed(n) {
   return date_ordered(n).reverse();
 }
+function createStatTable(id, n, sortName) {
+  var $statTable = $('#' + id).siblings('.algo-stat-table-block').find('table');
+  $statTable.append('<tr><th>Массив цифр (от 0 до 9)</th><th>Массив целых чисел</th><th>Массив строк</th><th>Массив дат</th></tr>');
 
+  var statTypes = Sort.averageValues[sortName][n];
+  for(var type in statTypes) {
+    var stItemCount = 0;
+    for(var val in statTypes[type]) {
+
+      var $stItem = $statTable.find('.st-item' + stItemCount);
+      if($stItem.length)
+        $stItem.append('<td>' + statTypes[type][val] +'</td>');
+      else
+        $statTable.append('<tr class="st-item' + stItemCount +'"><td>' + statTypes[type][val] + '</td><tr>')
+      stItemCount += 1;
+    }
+  }
+  showStatTable(id);
+}
+function showStatTable(id) {
+  var $isComputing = $('#' + id).siblings('.algo-stat-table-block').find('h1');
+  $isComputing.hide();
+
+  var $statTable = $('#' + id).siblings('.algo-stat-table-block').find('table');
+  $statTable.show();
+}
+function hideStatTable(id) {
+  var $statTable = $('#' + id).siblings('.algo-stat-table-block').find('h1');
+  $statTable.show();
+
+  var $isComputing = $('#' + id).siblings('.algo-stat-table-block').find('table');
+  $isComputing.hide();
+}
+function updateStatTable(id, n, sortName) {
+  var $statTableRows = $('#' + id).siblings('.algo-stat-table-block').find('table tr');
+  $statTableRows.remove();
+  createStatTable(id, n, sortName);
+}
 function draw_chart(id, n, sortName, isComputed) {
   $('#' + id).highcharts({
       chart: {
