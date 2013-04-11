@@ -317,6 +317,11 @@ h4 {
   box-shadow: 0 0 7px 0 rgba(0,0,0,0.18);
   margin-bottom: 15px;
 }
+.algo-stat-block:hover {
+  -moz-box-shadow: 0 0 7px 0 rgba(0,0,0,0.38);
+  -webkit-box-shadow: 0 0 7px 0 rgba(0,0,0,0.38);
+  box-shadow: 0 0 7px 0 rgba(0,0,0,0.38);
+}
 .algo-stat-table-block {
   width: 900px;
   height: 105px;

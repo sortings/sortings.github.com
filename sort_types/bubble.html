@@ -91,7 +91,7 @@
                     var tmp;
 
                     for (var i = data.length - 1; i > 0; i--)
-                        for (var j = 0; j < i; j++) {
+                        for (var j = 0; j < i; j++)
                             if (data[j] > data[j+1]) {
                                 tmp = data[j];
                                 data[j] = data[j+1];
@@ -132,7 +132,7 @@
           </div>
 
           <div class="submit">
-            <input class="100bubble" name="commit" type="submit" value="Пересчитать*">
+            <input class="100bubble" name="commit" type="submit" value="Пересчитать *">
           </div>
           <div class="separator"></div>
         </div>
@@ -147,7 +147,7 @@
           </div>
 
           <div class="submit">
-            <input class="500bubble" name="commit" type="submit" value="Пересчитать*">
+            <input class="500bubble" name="commit" type="submit" value="Пересчитать *">
           </div>
           <div class="separator"></div>
         </div>
@@ -162,7 +162,7 @@
           </div>
 
           <div class="submit">
-            <input class="5000bubble" name="commit" type="submit" value="Пересчитать*">
+            <input class="5000bubble" name="commit" type="submit" value="Пересчитать *">
           </div>
           <div class="separator"></div>
         </div>
@@ -175,12 +175,12 @@
             <table class="algo-stat-table"></table>
           </div>
           <div class="submit">
-            <input class="50000bubble" name="commit" type="submit" value="Пересчитать*">
+            <input class="50000bubble" name="commit" type="submit" value="Пересчитать *">
           </div>
           <div class="separator"></div>
         </div>
 
-        <p style="font-size: 13px;">* - некоторые испытания требуют значительного времени, так что нажимая на эту кнопку, вы действуете на свой срах и риск ;) А все потому, что в Javascript многопоточность в явном виде не представлена. Подробнее про это почитать можно <a style="color: navy;" href="http://javascript.info/tutorial/events-and-timing-depth">здесь</a>.</p>
+        <p style="font-size: 13px;">* - некоторые испытания требуют значительного времени, так что нажимая на эту кнопку, вы действуете на свой срах и риск ;) А все потому, что в Javascript многопоточность в явном виде не представлена, т.е. сортировки проходят последовательно. Подробнее про это почитать можно <a style="color: navy;" href="http://javascript.info/tutorial/events-and-timing-depth">здесь</a>.</p>
       </div>
     </div>
   </div>
