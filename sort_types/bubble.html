@@ -11,7 +11,10 @@
     <script type="text/javascript" src="../javascripts/jquery-1.9.1.js"></script>
 
     <script type="text/javascript" src="../javascripts/main.js"></script>
+    <script type="text/javascript" src="../javascripts/generators.js"></script>
+    <script type="text/javascript" src="../javascripts/charts_art.js"></script>
     <script type="text/javascript" src="../javascripts/sort.js"></script>
+    <script type="text/javascript" src="../javascripts/computed_values.js"></script>
 
     <!-- Подсветка кода -->
     <script type="text/javascript" src="../javascripts/shCore.js"></script>
@@ -27,7 +30,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   </head>
 
-  <body>
+  <body id="bubble">
 
   <header>
     <nav data-behavior="hover_global_nav">
@@ -127,7 +130,7 @@
           <div id="100bubble" class="algo-stat"></div>
           <p style="margin-left: 20px;">Более подробные значения</p>
           <div class="algo-stat-table-block">
-            <h1 style="text-align:center;display:none;">Вычисление...</h1>
+            <h1 class="computing">Вычисление...</h1>
             <table class="algo-stat-table"></table>
           </div>
 
@@ -142,7 +145,7 @@
           <div id="500bubble" class="algo-stat"></div>
           <p style="margin-left: 20px;">Более подробные значения</p>
           <div class="algo-stat-table-block">
-            <h1 style="text-align:center;display:none;">Вычисление...</h1>
+            <h1 class="computing">Вычисление...</h1>
             <table class="algo-stat-table"></table>
           </div>
 
@@ -157,7 +160,7 @@
           <div id="5000bubble" class="algo-stat"></div>
           <p style="margin-left: 20px;">Более подробные значения</p>
           <div class="algo-stat-table-block">
-            <h1 style="text-align:center;display:none;">Вычисление...</h1>
+            <h1 class="computing">Вычисление...</h1>
             <table class="algo-stat-table"></table>
           </div>
 
@@ -171,11 +174,35 @@
           <div id="50000bubble" class="algo-stat"></div>
           <p style="margin-left: 20px;">Более подробные значения</p>
           <div class="algo-stat-table-block">
-            <h1 style="text-align:center;display:none;">Вычисление...</h1>
+            <h1 class="computing">Вычисление...</h1>
             <table class="algo-stat-table"></table>
           </div>
           <div class="submit">
             <input class="50000bubble" name="commit" type="submit" value="Пересчитать *">
+          </div>
+          <div class="separator"></div>
+        </div>
+
+        <h4>Сравнение с рекурсивной формой</h4>
+        <div class="algo-stat-block">
+          <div id="recursive-comparison" class="algo-stat"></div>
+          <div class="algo-stat-table-block" style="text-align: center; height: 20px;">
+            <h1 class="computing">Вычисление...</h1>
+            <span>Массив из </span>
+            <select class="elements-type-select">
+              <option value="0">случайно сгенерированных</option>
+              <option value="1">правильно упорядоченных</option>
+              <option value="2">обратно упорядоченных</option>
+            </select>
+            <select class="array-type-select">
+              <option value="from0to9">цифр (от 0 до 9)</option>
+              <option value="integers">целых чисел</option>
+              <option value="strings">строк</option>
+              <option value="dates">дат</option>
+            </select>
+          </div>
+          <div class="submit">
+            <input class="recursive-comparison" name="commit" type="submit" value="Пересчитать выбранный тип *">
           </div>
           <div class="separator"></div>
         </div>

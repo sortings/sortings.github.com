@@ -16,4 +16,5 @@ jQuery(
         $whatToShow.first().show();
       }
   });
+  SyntaxHighlighter.all();
 });
