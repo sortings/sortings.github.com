@@ -5,29 +5,30 @@ Sort.selectedElementType = 0;
 Sort.selectedArrayType = "from0to9";
 
 Sort.prototype = {
-  bindBubble : function() {
-    var bubbles = {"100bubble" : 100, "500bubble" : 500, "5000bubble" : 5000, "50000bubble" : 50000};
-    for (var bubble in bubbles) {
-      draw_column(bubble, bubbles[bubble], "bubble", true);
+  bindSortStat : function() {
+    Sort.type = document.body.id;
+    createExperimentsBlocks();
+    var capacities = [ 100, 500, 5000, 50000 ];
+    for (var count in capacities) {
+
+      draw_column(capacities[count] + "_stat", capacities[count], Sort.type, true);
       draw_lines("recursive-comparison", true);
-      createStatTable(bubble, bubbles[bubble], "bubble");
-      $('.' + bubble).on('click', function() {
-        var id = $(this).attr("class")
-        var n = bubbles[id];
+      createStatTable(capacities[count] + "_stat", capacities[count], Sort.type);
 
+      $('.' + capacities[count] + "_stat").on('click', function() {
+        var n = $(this).attr("class").split('_')[0];
         /* блокируем все кнопки пересчета */
-
         setTimeout(function () {
-          hideStatTable(id);
-          capacityTests("bubble", n);
+          hideStatTable(n + "_stat");
+          capacityTests(Sort.type, n);
         }, 0);
-
       });
     }
     $('.recursive-comparison').on('click', function() {
         setTimeout(function () {
+          /* блокируем все кнопки пересчета */
           hideStatTable('recursive-comparison');
-          recursionTests("bubble");
+          recursionTests(Sort.type);
         }, 0);
     });
     $('.elements-type-select, .array-type-select').on('change', function (){
@@ -37,30 +38,6 @@ Sort.prototype = {
     });
   }
 }
-Sort.bubble = function(data, sortParams)
-{
-  for (var i = data.length - 1; i > 0; i--)
-    for (var j = 0; j < i; j++)
-      if (data[j] > data[j+1]) {
-          var tmp = data[j];
-          data[j] = data[j+1];
-          data[j+1] = tmp;
-      }
-  isReady(sortParams);
-};
-Sort.bubble_recursive = function(data, sortParams)
-{
-  for (var i=0;i<data.length-1;i++) {
-    if (data[i] > data[i+1] ) {
-      var tmp = data[i];
-      data[i] = data[i+1];
-      data[i+1] = tmp;
-      setTimeout(Sort.bubble_recursive, 0, data, sortParams);
-      return;
-    }
-  }
-  isReady(sortParams);
-};
 function isReady(sortParams) {
   var end = window.performance.now();
   var time = end - sortParams["start"];
@@ -78,8 +55,8 @@ function isReady(sortParams) {
     console.log("ready!")
     console.log(JSON.stringify(Sort.averageValues))
     if (typeof sortParams["is_recursive"] == 'undefined') {
-      draw_column(sortParams["n"] + sortParams["func_name"], sortParams["n"], sortParams["func_name"]);
-      updateStatTable(sortParams["n"] + sortParams["func_name"], sortParams["n"], sortParams["func_name"]);
+      draw_column(sortParams["n"] + "_stat", sortParams["n"], sortParams["func_name"]);
+      updateStatTable(sortParams["n"] + "_stat", sortParams["n"], sortParams["func_name"]);
       //console.log(sortParams["n"] + ": { from0to9 : [" + Sort.averageValues[funcName][params.length]["from0to9"][0] + ", " + Sort.averageValues[funcName][params.length]["from0to9"][1] + ", " + Sort.averageValues[funcName][params.length]["from0to9"][2] +"], integers : [" + Sort.averageValues[funcName][params.length]["integers"][0] + ", " + Sort.averageValues[funcName][params.length]["integers"][1] + ", " + Sort.averageValues[funcName][params.length]["integers"][2] + "], strings : [" + Sort.averageValues[funcName][params.length]["strings"][0] + ", " + Sort.averageValues[funcName][params.length]["strings"][1] + ", " + Sort.averageValues[funcName][params.length]["strings"][2] + "], dates: [" + Sort.averageValues[funcName][params.length]["dates"][0] + ", " + Sort.averageValues[funcName][params.length]["dates"][1] + ", " + Sort.averageValues[funcName][params.length]["dates"][2] + "] }");
     }
     else {
@@ -140,8 +117,6 @@ function recursionTests(sortName)
     benchmark(sortName, array50000_2, [Sort.selectedArrayType, Sort.selectedElementType]);
     benchmark(sortName, array50000, [Sort.selectedArrayType, Sort.selectedElementType], true);
   }
-
-
 }
 function capacityTests(sortName, n)
 {

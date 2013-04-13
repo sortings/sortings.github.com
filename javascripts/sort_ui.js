@@ -17,6 +17,25 @@ function createStatTable(id, n, sortName) {
   }
   showStatTable(id);
 }
+function createExperimentsBlocks() {
+  var capacities = [ 100, 500, 5000, 50000 ];
+  var experimentsContent = "";
+  for (var count in capacities) {
+    experimentsContent += '<div class="algo-stat-block">' +
+                          '<div id="' + capacities[count] +'_stat" class="algo-stat"></div>' +
+                          '<p style="margin-left: 20px;">Более подробные значения</p>' +
+                          '<div class="algo-stat-table-block">' +
+                          '<h1 class="computing">Вычисление...</h1>' +
+                          '<table class="algo-stat-table"></table>' +
+                          '</div>' +
+                          '<div class="submit">' +
+                          '<input class="' + capacities[count] +'_stat" name="commit" type="submit" value="Пересчитать *">' +
+                          '</div>' +
+                          '<div class="separator"></div>' +
+                          '</div>'
+  }
+  $('#experiments').append(experimentsContent);
+}
 function showStatTable(id) {
   var $isComputing = $('#' + id).siblings('.algo-stat-table-block').find('h1');
   $isComputing.hide();
