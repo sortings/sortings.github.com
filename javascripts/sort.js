@@ -2,7 +2,7 @@ function Sort() {}
 
 Sort.readyCount = 0;
 Sort.selectedElementType = 0;
-Sort.selectedArrayType = "integers";
+Sort.selectedArrayType = "from0to9";
 
 Sort.prototype = {
   bindBubble : function() {
@@ -64,6 +64,7 @@ Sort.bubble_recursive = function(data, sortParams)
 function isReady(sortParams) {
   var end = window.performance.now();
   var time = end - sortParams["start"];
+  time += (time == 0) ? 0.000012 : 0;
 
   if (typeof sortParams["is_recursive"] == 'undefined')
     Sort.averageValues[ sortParams["func_name"] ][ sortParams["n"] ][ sortParams["array_type"] ][ sortParams["elements_type"] ] = time;
@@ -71,13 +72,15 @@ function isReady(sortParams) {
     Sort.averageValues[ sortParams["func_name"] ][ "recursive" ][ sortParams["n"] ][ sortParams["array_type"] ][ sortParams["elements_type"] ] = time;
 
   Sort.readyCount -= 1;
+  console.log(time)
   if(Sort.readyCount == 0)
   {
     console.log("ready!")
+    console.log(JSON.stringify(Sort.averageValues))
     if (typeof sortParams["is_recursive"] == 'undefined') {
       draw_column(sortParams["n"] + sortParams["func_name"], sortParams["n"], sortParams["func_name"]);
       updateStatTable(sortParams["n"] + sortParams["func_name"], sortParams["n"], sortParams["func_name"]);
-      //console.log(params.length + ": { from0to9 : [" + Sort.averageValues[funcName][params.length]["from0to9"][0] + ", " + Sort.averageValues[funcName][params.length]["from0to9"][1] + ", " + Sort.averageValues[funcName][params.length]["from0to9"][2] +"], integers : [" + Sort.averageValues[funcName][params.length]["integers"][0] + ", " + Sort.averageValues[funcName][params.length]["integers"][1] + ", " + Sort.averageValues[funcName][params.length]["integers"][2] + "], strings : [" + Sort.averageValues[funcName][params.length]["strings"][0] + ", " + Sort.averageValues[funcName][params.length]["strings"][1] + ", " + Sort.averageValues[funcName][params.length]["strings"][2] + "], dates: [" + Sort.averageValues[funcName][params.length]["dates"][0] + ", " + Sort.averageValues[funcName][params.length]["dates"][1] + ", " + Sort.averageValues[funcName][params.length]["dates"][2] + "] }");
+      //console.log(sortParams["n"] + ": { from0to9 : [" + Sort.averageValues[funcName][params.length]["from0to9"][0] + ", " + Sort.averageValues[funcName][params.length]["from0to9"][1] + ", " + Sort.averageValues[funcName][params.length]["from0to9"][2] +"], integers : [" + Sort.averageValues[funcName][params.length]["integers"][0] + ", " + Sort.averageValues[funcName][params.length]["integers"][1] + ", " + Sort.averageValues[funcName][params.length]["integers"][2] + "], strings : [" + Sort.averageValues[funcName][params.length]["strings"][0] + ", " + Sort.averageValues[funcName][params.length]["strings"][1] + ", " + Sort.averageValues[funcName][params.length]["strings"][2] + "], dates: [" + Sort.averageValues[funcName][params.length]["dates"][0] + ", " + Sort.averageValues[funcName][params.length]["dates"][1] + ", " + Sort.averageValues[funcName][params.length]["dates"][2] + "] }");
     }
     else {
       draw_lines('recursive-comparison');
@@ -87,7 +90,7 @@ function isReady(sortParams) {
 }
 function recursionTests(sortName)
 {
-  Sort.readyCount = 5;
+  Sort.readyCount = 8;
   var arrayGenMethod = Sort.selectedArrayType + "_";
 
   switch (parseInt(Sort.selectedElementType)) {
@@ -102,15 +105,26 @@ function recursionTests(sortName)
       break
   }
 
-  benchmark(sortName, this[arrayGenMethod](100), [Sort.selectedArrayType, Sort.selectedElementType]);
-  benchmark(sortName, this[arrayGenMethod](500), [Sort.selectedArrayType, Sort.selectedElementType]);
-  benchmark(sortName, this[arrayGenMethod](5000), [Sort.selectedArrayType, Sort.selectedElementType]);
-  //benchmark(sortName, this[arrayGenMethod](50000), [Sort.selectedArrayType, Sort.selectedElementType]);
+  var array100 = this[arrayGenMethod](100);
+  var array500 = this[arrayGenMethod](500);
+  var array5000 = this[arrayGenMethod](5000);
+  var array50000 = this[arrayGenMethod](50000);
 
-  benchmark(sortName, this[arrayGenMethod](100), [Sort.selectedArrayType, Sort.selectedElementType], true);
-  benchmark(sortName, this[arrayGenMethod](500), [Sort.selectedArrayType, Sort.selectedElementType], true);
-  //benchmark(sortName, this[arrayGenMethod](5000), [Sort.selectedArrayType, Sort.selectedElementType], true);
-  //benchmark(sortName, this[arrayGenMethod](50000), [Sort.selectedArrayType, Sort.selectedElementType], true);
+  var array100_2 = array100.slice(0);
+  var array500_2 = array500.slice(0);
+  var array5000_2 = array5000.slice(0);
+  var array50000_2 = array50000.slice(0);
+
+  benchmark(sortName, array100_2, [Sort.selectedArrayType, Sort.selectedElementType]);
+  benchmark(sortName, array500_2, [Sort.selectedArrayType, Sort.selectedElementType]);
+  benchmark(sortName, array5000_2, [Sort.selectedArrayType, Sort.selectedElementType]);
+  benchmark(sortName, array50000_2, [Sort.selectedArrayType, Sort.selectedElementType]);
+
+  benchmark(sortName, array100, [Sort.selectedArrayType, Sort.selectedElementType], true);
+  benchmark(sortName, array500, [Sort.selectedArrayType, Sort.selectedElementType], true);
+  benchmark(sortName, array5000, [Sort.selectedArrayType, Sort.selectedElementType], true);
+  benchmark(sortName, array50000, [Sort.selectedArrayType, Sort.selectedElementType], true);
+
 }
 function capacityTests(sortName, n)
 {
