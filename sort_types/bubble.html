@@ -189,7 +189,7 @@
           <div id="recursive-comparison" class="algo-stat"></div>
           <div class="algo-stat-table-block" style="text-align: center; height: 20px;">
             <h1 class="computing">Вычисление...</h1>
-            <span>Массив из </span>
+            <span>Массивы из </span>
             <select class="elements-type-select">
               <option value="0">случайно сгенерированных</option>
               <option value="1">правильно упорядоченных</option>
@@ -201,7 +201,13 @@
               <option value="strings">строк</option>
               <option value="dates">дат</option>
             </select>
+            <span> с емкостью в </span>
+            <span><input type="checkbox" id="recursion-capacity-100" checked>100</span>
+            <span style="color:#daa520;"><input type="checkbox" id="recursion-capacity-500">500</span>
+            <span style="color:red;"><input type="checkbox" id="recursion-capacity-5000">5000</span>
+            <span style="color:red;"><input type="checkbox" id="recursion-capacity-50000">50000</span>
           </div>
+          <br>
           <div class="submit">
             <input class="recursive-comparison" name="commit" type="submit" value="Пересчитать выбранный тип **">
           </div>

@@ -90,7 +90,6 @@ function isReady(sortParams) {
 }
 function recursionTests(sortName)
 {
-  Sort.readyCount = 8;
   var arrayGenMethod = Sort.selectedArrayType + "_";
 
   switch (parseInt(Sort.selectedElementType)) {
@@ -105,6 +104,8 @@ function recursionTests(sortName)
       break
   }
 
+  Sort.readyCount = 0;
+
   var array100 = this[arrayGenMethod](100);
   var array500 = this[arrayGenMethod](500);
   var array5000 = this[arrayGenMethod](5000);
@@ -115,15 +116,31 @@ function recursionTests(sortName)
   var array5000_2 = array5000.slice(0);
   var array50000_2 = array50000.slice(0);
 
-  benchmark(sortName, array100_2, [Sort.selectedArrayType, Sort.selectedElementType]);
-  benchmark(sortName, array500_2, [Sort.selectedArrayType, Sort.selectedElementType]);
-  benchmark(sortName, array5000_2, [Sort.selectedArrayType, Sort.selectedElementType]);
-  benchmark(sortName, array50000_2, [Sort.selectedArrayType, Sort.selectedElementType]);
+  if ($('#recursion-capacity-100').is(':checked'))
+  {
+    Sort.readyCount += 2;
+    benchmark(sortName, array100_2, [Sort.selectedArrayType, Sort.selectedElementType]);
+    benchmark(sortName, array100, [Sort.selectedArrayType, Sort.selectedElementType], true);
+  }
+  if ($('#recursion-capacity-500').is(':checked'))
+  {
+    Sort.readyCount += 2;
+    benchmark(sortName, array500_2, [Sort.selectedArrayType, Sort.selectedElementType]);
+    benchmark(sortName, array500, [Sort.selectedArrayType, Sort.selectedElementType], true);
+  }
+  if ($('#recursion-capacity-5000').is(':checked'))
+  {
+    Sort.readyCount += 2;
+    benchmark(sortName, array5000_2, [Sort.selectedArrayType, Sort.selectedElementType]);
+    benchmark(sortName, array5000, [Sort.selectedArrayType, Sort.selectedElementType], true);
+  }
+  if ($('#recursion-capacity-50000').is(':checked'))
+  {
+    Sort.readyCount += 2;
+    benchmark(sortName, array50000_2, [Sort.selectedArrayType, Sort.selectedElementType]);
+    benchmark(sortName, array50000, [Sort.selectedArrayType, Sort.selectedElementType], true);
+  }
 
-  benchmark(sortName, array100, [Sort.selectedArrayType, Sort.selectedElementType], true);
-  benchmark(sortName, array500, [Sort.selectedArrayType, Sort.selectedElementType], true);
-  benchmark(sortName, array5000, [Sort.selectedArrayType, Sort.selectedElementType], true);
-  benchmark(sortName, array50000, [Sort.selectedArrayType, Sort.selectedElementType], true);
 
 }
 function capacityTests(sortName, n)
