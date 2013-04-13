@@ -203,12 +203,14 @@
             </select>
           </div>
           <div class="submit">
-            <input class="recursive-comparison" name="commit" type="submit" value="Пересчитать выбранный тип *">
+            <input class="recursive-comparison" name="commit" type="submit" value="Пересчитать выбранный тип **">
           </div>
           <div class="separator"></div>
         </div>
 
         <p style="font-size: 13px;">* - некоторые испытания требуют значительного времени, так что нажимая на эту кнопку, вы действуете на свой срах и риск ;) А все потому, что в Javascript многопоточность в явном виде не представлена, т.е. сортировки проходят последовательно. Подробнее про это почитать можно <a style="color: navy;" href="http://javascript.info/tutorial/events-and-timing-depth">здесь</a>.</p>
+
+        <p style="font-size: 13px;">** - чтобы не возникало переполнение стека, выделенного для нас браузером, для рекусрсивных функций использую косвенные вызовы. Возможно, не совсем честно, но других способов нет. В противном случае же хром (с максимальным размером стека среди популярных браузеров) крашился бы уже при сортировке пузырьком сложного массива размером более <a style="color: navy;" href="http://javascriptrules.com/2009/06/30/limitation-on-call-stacks/">150 элементов</a>.</p>
       </div>
     </div>
   </div>

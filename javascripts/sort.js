@@ -3,6 +3,7 @@ function Sort() {}
 Sort.readyCount = 0;
 Sort.selectedElementType = 0;
 Sort.selectedArrayType = "integers";
+
 Sort.prototype = {
   bindBubble : function() {
     var bubbles = {"100bubble" : 100, "500bubble" : 500, "5000bubble" : 5000, "50000bubble" : 50000};
@@ -14,9 +15,11 @@ Sort.prototype = {
         var id = $(this).attr("class")
         var n = bubbles[id];
 
+        /* блокируем все кнопки пересчета */
+
         setTimeout(function () {
           hideStatTable(id);
-          runTests("bubble", n);
+          capacityTests("bubble", n);
         }, 0);
 
       });
@@ -24,7 +27,7 @@ Sort.prototype = {
     $('.recursive-comparison').on('click', function() {
         setTimeout(function () {
           hideStatTable('recursive-comparison');
-          compareRecursion("bubble");
+          recursionTests("bubble");
         }, 0);
     });
     $('.elements-type-select, .array-type-select').on('change', function (){
@@ -34,7 +37,7 @@ Sort.prototype = {
     });
   }
 }
-Sort.bubble = function(data)
+Sort.bubble = function(data, sortParams)
 {
   for (var i = data.length - 1; i > 0; i--)
     for (var j = 0; j < i; j++)
@@ -43,24 +46,51 @@ Sort.bubble = function(data)
           data[j] = data[j+1];
           data[j+1] = tmp;
       }
+  isReady(sortParams);
 };
-Sort.bubble_recursive = function(data)
+Sort.bubble_recursive = function(data, sortParams)
 {
   for (var i=0;i<data.length-1;i++) {
     if (data[i] > data[i+1] ) {
       var tmp = data[i];
       data[i] = data[i+1];
       data[i+1] = tmp;
-      return Sort.bubble_recursive(data);
+      setTimeout(Sort.bubble_recursive, 0, data, sortParams);
+      return;
     }
   }
+  isReady(sortParams);
 };
-function compareRecursion(sortName)
+function isReady(sortParams) {
+  var end = window.performance.now();
+  var time = end - sortParams["start"];
+
+  if (typeof sortParams["is_recursive"] == 'undefined')
+    Sort.averageValues[ sortParams["func_name"] ][ sortParams["n"] ][ sortParams["array_type"] ][ sortParams["elements_type"] ] = time;
+  else
+    Sort.averageValues[ sortParams["func_name"] ][ "recursive" ][ sortParams["n"] ][ sortParams["array_type"] ][ sortParams["elements_type"] ] = time;
+
+  Sort.readyCount -= 1;
+  if(Sort.readyCount == 0)
+  {
+    console.log("ready!")
+    if (typeof sortParams["is_recursive"] == 'undefined') {
+      draw_column(sortParams["n"] + sortParams["func_name"], sortParams["n"], sortParams["func_name"]);
+      updateStatTable(sortParams["n"] + sortParams["func_name"], sortParams["n"], sortParams["func_name"]);
+      //console.log(params.length + ": { from0to9 : [" + Sort.averageValues[funcName][params.length]["from0to9"][0] + ", " + Sort.averageValues[funcName][params.length]["from0to9"][1] + ", " + Sort.averageValues[funcName][params.length]["from0to9"][2] +"], integers : [" + Sort.averageValues[funcName][params.length]["integers"][0] + ", " + Sort.averageValues[funcName][params.length]["integers"][1] + ", " + Sort.averageValues[funcName][params.length]["integers"][2] + "], strings : [" + Sort.averageValues[funcName][params.length]["strings"][0] + ", " + Sort.averageValues[funcName][params.length]["strings"][1] + ", " + Sort.averageValues[funcName][params.length]["strings"][2] + "], dates: [" + Sort.averageValues[funcName][params.length]["dates"][0] + ", " + Sort.averageValues[funcName][params.length]["dates"][1] + ", " + Sort.averageValues[funcName][params.length]["dates"][2] + "] }");
+    }
+    else {
+      draw_lines('recursive-comparison');
+      showStatTable('recursive-comparison');
+    }
+  }
+}
+function recursionTests(sortName)
 {
-  Sort.readyCount = 8;
+  Sort.readyCount = 5;
   var arrayGenMethod = Sort.selectedArrayType + "_";
 
-  switch (Sort.selectedElementType) {
+  switch (parseInt(Sort.selectedElementType)) {
     case 0:
       arrayGenMethod += "random";
       break
@@ -79,10 +109,10 @@ function compareRecursion(sortName)
 
   benchmark(sortName, this[arrayGenMethod](100), [Sort.selectedArrayType, Sort.selectedElementType], true);
   benchmark(sortName, this[arrayGenMethod](500), [Sort.selectedArrayType, Sort.selectedElementType], true);
-  benchmark(sortName, this[arrayGenMethod](5000), [Sort.selectedArrayType, Sort.selectedElementType], true);
+  //benchmark(sortName, this[arrayGenMethod](5000), [Sort.selectedArrayType, Sort.selectedElementType], true);
   //benchmark(sortName, this[arrayGenMethod](50000), [Sort.selectedArrayType, Sort.selectedElementType], true);
 }
-function runTests(sortName, n)
+function capacityTests(sortName, n)
 {
   Sort.readyCount = 12;
   benchmark(sortName, from0to9_random(n), ["from0to9", 0]);
@@ -104,64 +134,9 @@ function benchmark(funcName, params, paramsType, isRecursive) {
     var start = window.performance.now();
 
     if (typeof isRecursive == 'undefined')
-      Sort[funcName](params);
+      Sort[funcName](params, { "start" : start, "func_name" : funcName, "n" : params.length, "array_type" : paramsType[0], "elements_type" : paramsType[1] });
     else
-      Sort[funcName + "_recursive"](params);
+      Sort[funcName + "_recursive"](params, { "start" : start, "func_name" : funcName, "is_recursive" : true, "n" : params.length, "array_type" : paramsType[0], "elements_type" : paramsType[1] });
 
-    var end = window.performance.now();
-    var time = end - start;
-
-    if (typeof isRecursive == 'undefined')
-      Sort.averageValues[funcName][params.length][paramsType[0]][paramsType[1]] = time;
-    else
-      Sort.averageValues[funcName]["recursive"][params.length][paramsType[0]][paramsType[1]] = time;
-
-    Sort.readyCount -= 1;
-    if(Sort.readyCount == 0)
-    {
-      console.log("ready!")
-      draw_column(params.length + funcName, params.length, funcName);
-      updateStatTable(params.length + funcName, params.length, funcName);
-      console.log(params.length + ": { from0to9 : [" + Sort.averageValues[funcName][params.length]["from0to9"][0] + ", " + Sort.averageValues[funcName][params.length]["from0to9"][1] + ", " + Sort.averageValues[funcName][params.length]["from0to9"][2] +"], integers : [" + Sort.averageValues[funcName][params.length]["integers"][0] + ", " + Sort.averageValues[funcName][params.length]["integers"][1] + ", " + Sort.averageValues[funcName][params.length]["integers"][2] + "], strings : [" + Sort.averageValues[funcName][params.length]["strings"][0] + ", " + Sort.averageValues[funcName][params.length]["strings"][1] + ", " + Sort.averageValues[funcName][params.length]["strings"][2] + "], dates: [" + Sort.averageValues[funcName][params.length]["dates"][0] + ", " + Sort.averageValues[funcName][params.length]["dates"][1] + ", " + Sort.averageValues[funcName][params.length]["dates"][2] + "] }");
-    }
   }, 0);
 }
-function createStatTable(id, n, sortName) {
-  var $statTable = $('#' + id).siblings('.algo-stat-table-block').find('table');
-  $statTable.append('<tr><th>Массив цифр (от 0 до 9)</th><th>Массив целых чисел</th><th>Массив строк</th><th>Массив дат</th></tr>');
-
-  var statTypes = Sort.averageValues[sortName][n];
-  for(var type in statTypes) {
-    var stItemCount = 0;
-    for(var val in statTypes[type]) {
-
-      var $stItem = $statTable.find('.st-item' + stItemCount);
-      if($stItem.length)
-        $stItem.append('<td>' + statTypes[type][val] +'</td>');
-      else
-        $statTable.append('<tr class="st-item' + stItemCount +'"><td>' + statTypes[type][val] + '</td><tr>')
-      stItemCount += 1;
-    }
-  }
-  showStatTable(id);
-}
-function showStatTable(id) {
-  var $isComputing = $('#' + id).siblings('.algo-stat-table-block').find('h1');
-  $isComputing.hide();
-
-  var $statTable = $('#' + id).siblings('.algo-stat-table-block').find('table');
-  $statTable.show();
-}
-function hideStatTable(id) {
-  var $statTable = $('#' + id).siblings('.algo-stat-table-block').find('h1');
-  $statTable.show();
-
-  var $isComputing = $('#' + id).siblings('.algo-stat-table-block').find('table');
-  $isComputing.hide();
-}
-function updateStatTable(id, n, sortName) {
-  var $statTableRows = $('#' + id).siblings('.algo-stat-table-block').find('table tr');
-  $statTableRows.remove();
-  createStatTable(id, n, sortName);
-}
-
