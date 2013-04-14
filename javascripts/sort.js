@@ -12,7 +12,8 @@ Sort.prototype = {
     for (var count in capacities) {
 
       draw_column(capacities[count] + "_stat", capacities[count], Sort.type, true);
-      draw_lines("recursive-comparison", true);
+      if ($('#recursive-comparison').length)
+        draw_lines('recursive-comparison', true);
       createStatTable(capacities[count] + "_stat", capacities[count], Sort.type);
 
       $('.' + capacities[count] + "_stat").on('click', function() {
@@ -41,7 +42,7 @@ Sort.prototype = {
 function isReady(sortParams) {
   var end = window.performance.now();
   var time = end - sortParams["start"];
-  time += (time == 0) ? 0.000012 : 0;
+  time += (time == 0) ? Math.random() : 0;
 
   if (typeof sortParams["is_recursive"] == 'undefined')
     Sort.averageValues[ sortParams["func_name"] ][ sortParams["n"] ][ sortParams["array_type"] ][ sortParams["elements_type"] ] = time;

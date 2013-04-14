@@ -70,3 +70,46 @@ Sort.merge = function(items, sortParams) {
   }
   isReady(sortParams);
 }
+/* шелла */
+Sort.increment = function(inc)
+{
+  var p1, p2, p3, s;
+  p1 = p2 = p3 = 1;
+  s = -1;
+  do
+  {
+    if (++s % 2)
+    {
+      inc[s] = 8*p1 - 6*p2 + 1;
+    }
+    else
+    {
+      inc[s] = 9*p1 - 9*p3 + 1;
+      p2 *= 2;
+      p3 *= 2;
+    }
+    p1 *= 2;
+  }
+  while(3*inc[s] < inc.length);
+
+  return s > 0 ? --s : 0;
+}
+Sort.shell = function(array, sortParams)
+{
+  var inc, i, j, seq = new Array(array.length);
+  var s;
+
+  s = Sort.increment(seq);
+  while (s >= 0)
+  {
+    inc = seq[s--];
+    for (i = inc; i < array.length; ++i)
+    {
+      var temp = array[i];
+      for (j = i-inc; (j >= 0) && (array[j] > temp); j -= inc)
+        array[j + inc] = array[j];
+      array[j] = temp;
+    }
+  }
+  isReady(sortParams);
+}

@@ -1,0 +1,201 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Сортировки || Анализ сложности</title>
+
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="shortcut icon" href="../images/favicon.png" type="image/png">
+
+    <script type="text/javascript" src="../javascripts/jquery-1.9.1.js"></script>
+
+    <script type="text/javascript" src="../javascripts/main.js"></script>
+    <script type="text/javascript" src="../javascripts/generators.js"></script>
+    <script type="text/javascript" src="../javascripts/charts_art.js"></script>
+    <script type="text/javascript" src="../javascripts/sort.js"></script>
+    <script type="text/javascript" src="../javascripts/sort_types.js"></script>
+    <script type="text/javascript" src="../javascripts/sort_ui.js"></script>
+    <script type="text/javascript" src="../javascripts/computed_values.js"></script>
+
+    <!-- Подсветка кода -->
+    <script type="text/javascript" src="../javascripts/shCore.js"></script>
+    <script type="text/javascript" src="../javascripts/shBrushJScript.js"></script>
+    <script type="text/javascript" src="../javascripts/shBrushCSharp.js"></script>
+    <link href="../stylesheets/shCore.css" rel="stylesheet" type="text/css" />
+    <link href="../stylesheets/shThemeDefault.css" rel="stylesheet" type="text/css" />
+
+    <!-- Диаграммы и графики -->
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  </head>
+
+  <body id="shell">
+
+    <header>
+      <nav data-behavior="hover_global_nav">
+        <div class="logo">
+          <a href="/">Сортировки</a>
+        </div>
+
+        <div class="announcements_link">
+          <a href="">Гибридная!</a>
+        </div>
+
+        <div class="global_links">
+          <a class="topnav_root" href="../index.html">Виды</a>
+          <a class="topnav_calendar" href="">Сравнение</a>
+          <a class="topnav_timeline"  href="">Выводы</a>
+          <a class="topnav_everyone" href="">О сайте</a>
+        </div>
+      </nav>
+    </header>
+
+    <div class="container stack_container" style="width: 960px;">
+      <div class="panel sheet project active">
+        <header>
+          <div class="title">
+            <h1>Сортировка Шелла</h1>
+          </div>
+        </header>
+        <div class="description">
+          <h4>Описание</h4>
+          <p>
+            &nbsp;&nbsp;При сортировке Шелла сначала сравниваются и сортируются между собой значения, отстоящие один от другого на некотором расстоянии d. После этого процедура повторяется для некоторых меньших значений d, а завершается сортировка Шелла упорядочиванием элементов при d=1 (то есть обычной сортировкой вставками). Эффективность сортировки Шелла в определённых случаях обеспечивается тем, что элементы «быстрее» встают на свои места (в простых методах сортировки, например, пузырьковой, каждая перестановка двух элементов уменьшает количество инверсий в списке максимум на 1, а при сортировке Шелла это число может быть больше).
+            <br>
+            &nbsp;&nbsp;Невзирая на то, что сортировка Шелла во многих случаях медленнее, чем быстрая сортировка, она имеет ряд преимуществ:
+            <ul>
+              <li>отсутствие потребности в памяти под стек;</li>
+              <li>отсутствие деградации при неудачных наборах данных — быстрая сортировка легко деградирует до O(n²), что хуже, чем худшее гарантированное время для сортировки Шелла.</li>
+            </ul>
+          </p>
+          <p>
+            &nbsp;&nbsp;При проведении экспериментов, для выбора длины промежутков используется предложенный Седжвиком метод:
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Перед сортировкой происходит вычисление длин промежутков, которые записываются в массив inc.
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Значение записываемого элемента вычисляется по формуле:
+            <br>&nbsp;&nbsp;&nbsp;&nbsp;<img src="../images/sedjvik_formula.gif">
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;Остановиться нужно на значении inc[i-1], если 3*inc[i] > размер массива.
+          </p>
+
+          <h4>Оценка сложности</h4>
+          <table class="algo-complexity">
+            <tr>
+              <th>Лучшая</th>
+              <th>Средняя</th>
+              <th>Худшая</th>
+            </tr>
+            <tr>
+              <td>n</td>
+              <td>n (log n)² или n^(3/2)</td>
+              <td>n (log n)²</td>
+            </tr>
+          </table>
+
+          <h4>Код</h4>
+          <div class="tabnav">
+            <ul class="tabnav-tabs">
+                <li class="js-tab selected">JavaScript</li>
+                <li class="cs-tab">C#</li>
+            </ul>
+          </div>
+          <div class="code">
+            <div class="js">
+              <script type="syntaxhighlighter" class="brush: js"><![CDATA[
+                function increment(inc)
+                {
+                    var p1 = p2 = p3 = 1, s = -1;
+                    do
+                    {
+                        if (++s % 2)
+                        {
+                            inc[s] = 8*p1 - 6*p2 + 1;
+                        }
+                        else
+                        {
+                            inc[s] = 9*p1 - 9*p3 + 1;
+                            p2 *= 2;
+                            p3 *= 2;
+                        }
+                        p1 *= 2;
+                    }
+                    while(3*inc[s] < inc.length);
+
+                    return s > 0 ? --s : 0;
+                }
+                function shell(array, sortParams)
+                {
+                    var inc, i, j, seq = new Array(array.length);
+
+                    var s = increment(seq);
+                    while (s >= 0)
+                    {
+                        inc = seq[s--];
+                        for (i = inc; i < array.length; ++i)
+                        {
+                            var temp = array[i];
+                            for (j = i-inc; (j >= 0) && (array[j] > temp); j -= inc)
+                                array[j + inc] = array[j];
+                            array[j] = temp;
+                        }
+                    }
+                }
+                ]]></script>
+            </div>
+            <div class="cs" style="display:none;">
+              <script type="syntaxhighlighter" class="brush: csharp"><![CDATA[
+                  int increment(int[] inc) {
+                    int p1 = p2 = p3 = 1, s = -1;
+                    do {
+                      if (++s % 2) {
+                        inc[s] = 8*p1 - 6*p2 + 1;
+                      }
+                      else {
+                        inc[s] = 9*p1 - 9*p3 + 1;
+                        p2 *= 2;
+                        p3 *= 2;
+                      }
+                      p1 *= 2;
+                    } while(3*inc[s] < inc.Length);
+
+                    return s > 0 ? --s : 0;
+                  }
+                  void shellSort(int[] a) {
+                    int inc, i, j;
+                    int[] seq = new int[40];
+
+                    int s = increment(seq);
+                    while (s >= 0) {
+                      inc = seq[s--];
+
+                      for (i = inc; i < a.Length; i++) {
+                        int temp = a[i];
+                        for (j = i-inc; (j >= 0) && (a[j] > temp); j -= inc)
+                          a[j+inc] = a[j];
+                        a[j+inc] = temp;
+                      }
+                    }
+                  }
+                ]]></script>
+            </div>
+          </div>
+
+        </div>
+        <div class="algo_test">
+
+          <h4>Испытания</h4>
+          <div id="experiments"></div>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      SyntaxHighlighter.all();
+      (new Sort).bindSortStat();
+    </script>
+  </body>
+</html>
