@@ -113,3 +113,87 @@ Sort.shell = function(array, sortParams)
   }
   isReady(sortParams);
 }
+/* быстрая */
+Sort.quick = function(data, sortParams) {
+  var a = data,
+  f_compare = function(a, b) {
+    return ((a == b) ? 0 : ((a > b) ? 1 : -1));
+  };
+
+  var qs = function (l, r)  {
+    var i = l,
+        j = r,
+        x = a[Math.floor(Math.random()*(r-l+1))+l];
+
+    while(i <= j) {
+      while(f_compare(a[i], x) == -1) {
+        i++;
+      }
+      while(f_compare(a[j], x) == 1) {
+        j--;
+      }
+      if(i <= j) {
+        Sort.swap(a, i++, j--);
+      }
+    };
+    if(l < j) {
+      qs(l, j);
+    }
+    if(i < r) {
+      qs(i, r);
+    }
+  };
+
+  qs(0, a.length-1);
+  isReady(sortParams);
+};
+Sort.partition = function(items, left, right) {
+  var pivot   = items[Math.floor((right + left) / 2)],
+      i       = left,
+      j       = right;
+
+  while (i <= j) {
+
+    while (items[i] < pivot) {
+      i++;
+    }
+
+    while (items[j] > pivot) {
+      j--;
+    }
+
+    if (i <= j) {
+      Sort.swap(items, i, j);
+      i++;
+      j--;
+    }
+  }
+
+  return i;
+}
+Sort.swap = function(items, firstIndex, secondIndex){
+    var temp = items[firstIndex];
+    items[firstIndex] = items[secondIndex];
+    items[secondIndex] = temp;
+}
+Sort.quick_recursive = function(items, sortParams, left, right) {
+  var index;
+
+  if (items.length > 1) {
+
+    left = typeof left != "number" ? 0 : left;
+    right = typeof right != "number" ? items.length - 1 : right;
+
+    index = Sort.partition(items, left, right);
+
+    if (left < index - 1) {
+      Sort.quick_recursive(items, sortParams, left, index - 1);
+    }
+
+    if (index < right) {
+      Sort.quick_recursive(items, sortParams, index, right);
+    }
+  }
+  if(index == items.length-1)
+    isReady(sortParams);
+}
