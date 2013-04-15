@@ -79,6 +79,9 @@ div.global_links a {
   -moz-transition: color 0.2s;
   transition: color 0.2s;
 }
+div.global_links a.topnav_calendar {
+  width: 145px;
+}
 div.global_links a.current_link {
   text-decoration: underline;
   color: #000000;
