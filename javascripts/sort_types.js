@@ -114,37 +114,60 @@ Sort.shell = function(array, sortParams)
   isReady(sortParams);
 }
 /* быстрая */
-Sort.quick = function(data, sortParams) {
-  var a = data,
-  f_compare = function(a, b) {
-    return ((a == b) ? 0 : ((a > b) ? 1 : -1));
-  };
+Sort.quick = function(input, sortParams) {
+  var stack = new Array();
+  var pivot;
+  var pivotIndex = 0;
+  var leftIndex = pivotIndex + 1;
+  var rightIndex = input.length - 1;
 
-  var qs = function (l, r)  {
-    var i = l,
-        j = r,
-        x = a[Math.floor(Math.random()*(r-l+1))+l];
+  stack.push(pivotIndex);
+  stack.push(rightIndex);
 
-    while(i <= j) {
-      while(f_compare(a[i], x) == -1) {
-        i++;
-      }
-      while(f_compare(a[j], x) == 1) {
-        j--;
-      }
-      if(i <= j) {
-        Sort.swap(a, i++, j--);
-      }
-    };
-    if(l < j) {
-      qs(l, j);
+  var leftIndexOfSubSet, rightIndexOfSubset;
+
+  while (stack.length > 0)
+  {
+    rightIndexOfSubset = parseInt(stack.pop());
+    leftIndexOfSubSet = parseInt(stack.pop());
+
+    leftIndex = leftIndexOfSubSet + 1;
+    pivotIndex = leftIndexOfSubSet;
+    rightIndex = rightIndexOfSubset;
+
+    pivot = input[pivotIndex];
+
+    if (leftIndex > rightIndex)
+      continue;
+
+    while (leftIndex < rightIndex)
+    {
+      while ((leftIndex <= rightIndex) && (input[leftIndex] <= pivot))
+        leftIndex++;
+
+      while ((leftIndex <= rightIndex) && (input[rightIndex] >= pivot))
+        rightIndex--;
+
+      if (rightIndex >= leftIndex)
+        Sort.swap(input, leftIndex, rightIndex);
     }
-    if(i < r) {
-      qs(i, r);
-    }
-  };
 
-  qs(0, a.length-1);
+    if (pivotIndex <= rightIndex)
+      if( input[pivotIndex] > input[rightIndex])
+        Sort.swap(input, pivotIndex, rightIndex);
+
+    if (leftIndexOfSubSet < rightIndex)
+    {
+      stack.push(leftIndexOfSubSet);
+      stack.push(rightIndex - 1);
+    }
+
+    if (rightIndexOfSubset > rightIndex)
+    {
+      stack.push(rightIndex + 1);
+      stack.push(rightIndexOfSubset);
+    }
+  }
   isReady(sortParams);
 };
 Sort.partition = function(items, left, right) {

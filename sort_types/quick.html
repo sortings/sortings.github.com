@@ -90,6 +90,68 @@
           <div class="code">
             <div class="js">
               <script type="syntaxhighlighter" class="brush: js"><![CDATA[
+                  function q_sort(input)
+                  {
+                      var stack = new Array();
+                      var pivot;
+                      var pivotIndex = 0;
+                      var leftIndex = pivotIndex + 1;
+                      var rightIndex = input.length - 1;
+
+                      stack.push(pivotIndex);
+                      stack.push(rightIndex);
+
+                      var leftIndexOfSubSet, rightIndexOfSubset;
+
+                      while (stack.length > 0)
+                      {
+                          rightIndexOfSubset = parseInt(stack.pop());
+                          leftIndexOfSubSet = parseInt(stack.pop());
+
+                          leftIndex = leftIndexOfSubSet + 1;
+                          pivotIndex = leftIndexOfSubSet;
+                          rightIndex = rightIndexOfSubset;
+
+                          pivot = input[pivotIndex];
+
+                          if (leftIndex > rightIndex)
+                              continue;
+
+                          while (leftIndex < rightIndex)
+                          {
+                              while ((leftIndex <= rightIndex) && (input[leftIndex] <= pivot))
+                                  leftIndex++;
+
+                              while ((leftIndex <= rightIndex) && (input[rightIndex] >= pivot))
+                                  rightIndex--;
+
+                              if (rightIndex >= leftIndex)
+                                  SwapElement(input, leftIndex, rightIndex);
+                          }
+
+                          if (pivotIndex <= rightIndex)
+                              if( input[pivotIndex] > input[rightIndex])
+                                  SwapElement(input, pivotIndex, rightIndex);
+
+                          if (leftIndexOfSubSet < rightIndex)
+                          {
+                              stack.push(leftIndexOfSubSet);
+                              stack.push(rightIndex - 1);
+                          }
+
+                          if (rightIndexOfSubset > rightIndex)
+                          {
+                              stack.push(rightIndex + 1);
+                              stack.push(rightIndexOfSubset);
+                          }
+                      }
+                  }
+                  function SwapElement(arr, left, right)
+                  {
+                      var temp = arr[left];
+                      arr[left] = arr[right];
+                      arr[right] = temp;
+                  }
                 ]]></script>
             </div>
             <div class="cs" style="display:none;">
