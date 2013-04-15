@@ -256,3 +256,43 @@ Sort.radix = function(arr, sortParams)
   }
   isReady(sortParams);
 }
+/* пирамидальная */
+Sort.heap = function(a, sortParams)
+{
+  var n = a.length, i, sh = 0, b = 0;
+  while (1)
+  {
+    b = 0;
+    for (i = 0; i < n; ++i)
+    {
+      if (i*2 + 2 + sh < n)
+      {
+        if (a[i+sh] > a[i*2 + 1 + sh] || a[i + sh] > a[i*2 + 2 + sh])
+        {
+          if (a[i*2+1+sh] < a[i*2+2+sh])
+          {
+            Sort.swap(a, i+sh, i*2+1+sh);
+            b = 1;
+          }
+          else if (a[i*2+2+sh] < a[i*2+1+sh])
+          {
+            Sort.swap(a, i+sh, i*2+2+sh);
+            b = 1;
+          }
+        }
+      }
+      else if (i * 2 + 1 + sh < n)
+      {
+        if (a[i+sh] > a[i*2+1+sh])
+        {
+          Sort.swap(a, i+sh, i*2+1+sh);
+          b = 1;
+        }
+      }
+    }
+    if (!b) sh +=1;
+    if (sh+2 == n)
+      break;
+  }
+  isReady(sortParams);
+}
