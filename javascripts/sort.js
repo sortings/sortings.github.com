@@ -21,7 +21,8 @@ Sort.prototype = {
         /* блокируем все кнопки пересчета */
         setTimeout(function () {
           hideStatTable(n + "_stat");
-          capacityTests(Sort.type, n);
+          var onlyDigits = Sort.type == "radix" ? true : onlyDigits;
+          capacityTests(Sort.type, n, onlyDigits);
         }, 0);
       });
     }
@@ -119,21 +120,36 @@ function recursionTests(sortName)
     benchmark(sortName, array50000, [Sort.selectedArrayType, Sort.selectedElementType], true);
   }
 }
-function capacityTests(sortName, n)
+function capacityTests(sortName, n, onlyDigits)
 {
-  Sort.readyCount = 12;
+  if (typeof onlyDigits == 'undefined')
+    Sort.readyCount = 12;
+  else
+    Sort.readyCount = 6;
+
   benchmark(sortName, from0to9_random(n), ["from0to9", 0]);
   benchmark(sortName, integers_random(n), ["integers", 0]);
-  benchmark(sortName, strings_random(n), ["strings", 0]);
-  benchmark(sortName, dates_random(n), ["dates", 0]);
+
+  if (typeof onlyDigits == 'undefined') {
+    benchmark(sortName, strings_random(n), ["strings", 0]);
+    benchmark(sortName, dates_random(n), ["dates", 0]);
+  }
+
   benchmark(sortName, from0to9_ordered(n), ["from0to9", 1]);
   benchmark(sortName, integers_ordered(n), ["integers", 1]);
-  benchmark(sortName, strings_ordered(n), ["strings", 1]);
-  benchmark(sortName, dates_ordered(n), ["dates", 1]);
+
+  if (typeof onlyDigits == 'undefined') {
+    benchmark(sortName, strings_ordered(n), ["strings", 1]);
+    benchmark(sortName, dates_ordered(n), ["dates", 1]);
+  }
+
   benchmark(sortName, from0to9_reversed(n), ["from0to9", 2]);
   benchmark(sortName, integers_reversed(n), ["integers", 2]);
-  benchmark(sortName, strings_reversed(n), ["strings", 2]);
-  benchmark(sortName, dates_reversed(n), ["dates", 2]);
+
+  if (typeof onlyDigits == 'undefined') {
+    benchmark(sortName, strings_reversed(n), ["strings", 2]);
+    benchmark(sortName, dates_reversed(n), ["dates", 2]);
+  }
 }
 function benchmark(funcName, params, paramsType, isRecursive) {
 

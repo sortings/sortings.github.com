@@ -220,3 +220,39 @@ Sort.quick_recursive = function(items, sortParams, left, right) {
   if(index == items.length-1)
     isReady(sortParams);
 }
+/* поразрядная */
+Sort.insert = function(arr, i, j)
+{
+  tmp = arr[i];
+  arr.splice(i, 1);
+  arr.splice(j, 0, tmp);
+}
+Sort.radix = function(arr, sortParams)
+{
+  var bit, end, i, mask;
+  bit = 0;
+  while(true)
+  {
+    mask = 1 << bit;
+    i = 0;
+    end = arr.length;
+    while(i < end)
+    {
+      if(arr[i] & mask)
+      {
+        Sort.insert(arr, i, arr.length - 1);
+        end--;
+      }
+      else
+      {
+        i++;
+      }
+    }
+    bit++;
+    if(end === arr.length)
+    {
+      break;
+    }
+  }
+  isReady(sortParams);
+}
