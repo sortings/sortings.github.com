@@ -122,3 +122,63 @@ function draw_lines(id, isComputed) {
       }]
   });
 }
+function draw_comparison(id, n, sortings) {
+  var array_type = id.split('-')[0];
+  var elements_type = Sort.humanize_array_elements_type(sortings["elements_type"]);
+
+  $('#' + id).highcharts({
+      chart: {
+          type: 'bar'
+      },
+      title: {
+          text: 'Скорость сортировки массива ' + Sort.array_types_names[array_type]
+      },
+      subtitle: {
+          text:  n + ' элементов'
+      },
+      xAxis: {
+          categories: sortings["names"],
+          title: {
+              text: null
+          }
+      },
+      yAxis: {
+          min: 0,
+          title: {
+              text: 'Время (миллисекунды)',
+              align: 'high'
+          },
+          labels: {
+              overflow: 'justify'
+          }
+      },
+      tooltip: {
+          valueSuffix: ' миллисекунд(ы)'
+      },
+      plotOptions: {
+          bar: {
+              dataLabels: {
+                  enabled: true
+              }
+          }
+      },
+      legend: {
+          layout: 'vertical',
+          align: 'right',
+          verticalAlign: 'top',
+          x: -100,
+          y: 100,
+          floating: true,
+          borderWidth: 1,
+          backgroundColor: '#FFFFFF',
+          shadow: true
+      },
+      credits: {
+          enabled: false
+      },
+      series: [{
+          name: elements_type,
+          data: sortings["values"]
+      }]
+  });
+}

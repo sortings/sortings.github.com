@@ -342,3 +342,23 @@ h1.computing {
   text-align: center;
   display: none;
 }
+.conclusion {
+  background: url('../images/conclusion_banner.png') no-repeat left top;
+  width: 950px;
+  height: 177px;
+  margin-left: -40px;
+}
+.conclusion div {
+  width: 750px;
+  padding-left: 100px;
+  padding-top: 25px;
+}
+.conclusion p {
+  color: #0a0805;
+  letter-spacing: 0px;
+  padding-top: 30px;
+  padding-bottom: 15px;
+  margin: 0px;
+  text-shadow: #f7f6f2 1px 1px 0;
+  font: 14px/12px Georgia, "Times New Roman", Times, serif;
+}

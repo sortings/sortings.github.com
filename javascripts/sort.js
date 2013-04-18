@@ -3,8 +3,79 @@ function Sort() {}
 Sort.readyCount = 0;
 Sort.selectedElementType = 0;
 Sort.selectedArrayType = "from0to9";
-
+Sort.array_types_names = {
+  "from0to9" : "цифр (от 0 до 9)",
+  "integers" : "целых чисел",
+  "strings" : "строк",
+  "dates" : "дат"
+};
+Sort.humanize_sort_name = function (sort_name) {
+  var humanized = "";
+  switch (sort_name.split('_')[0]) {
+    case "bubble":
+      humanized = "Пузырьком";
+      break
+    case "merge":
+      humanized = "Слиянием";
+      break
+    case "shell":
+      humanized = "Шелла";
+      break
+    case "quick":
+      humanized = "Быстрая";
+      break
+    case "heap":
+      humanized = "Пирамидальная";
+      break
+    case "radix":
+      humanized = "Поразрядная";
+      break
+  };
+  if (sort_name.split('_').length > 1)
+    humanized += " (рекурсивная)";
+  return humanized;
+}
+Sort.humanize_array_elements_type = function (elements_type) {
+  var humanized = "";
+  switch (parseInt(elements_type)) {
+    case 0:
+      humanized = "Среднее значение для различных типов массивов";
+      break
+    case 1:
+      humanized = "Случайно сгенерированный массив";
+      break
+    case 2:
+      humanized = "Правильно упорядоченный массив";
+      break
+    case 3:
+      humanized = "Обратно упорядоченный массив";
+      break
+  };
+  return humanized;
+}
 Sort.prototype = {
+
+  bindSortsComparison : function() {
+    $('.elements-type-select, .array-type-select').on('change', function (){
+      var current_comparison_type = $(this).parent().siblings('.algo-stat').attr('id');
+
+      var array_capacity = $(this).siblings('.array-type-select').length == 0 ?
+                              $(this).val() :
+                              $(this).siblings('.array-type-select').val();
+
+      var array_elements_type = $(this).siblings('.elements-type-select').length == 0 ?
+                                  $(this).val() :
+                                  $(this).siblings('.elements-type-select').val();
+
+      draw_comparison(current_comparison_type,
+                      array_capacity,
+                      getComparisonHash(array_capacity, current_comparison_type.split('-')[0], parseInt(array_elements_type)));
+    });
+    for(var type in Sort.array_types_names) {
+      draw_comparison(type + "-comparison", 100, getComparisonHash(100, "from0to9", 0));
+    }
+  },
+
   bindSortStat : function() {
     Sort.type = document.body.id;
     createExperimentsBlocks();
@@ -162,4 +233,47 @@ function benchmark(funcName, params, paramsType, isRecursive) {
       Sort[funcName + "_recursive"](params, { "start" : start, "func_name" : funcName, "is_recursive" : true, "n" : params.length, "array_type" : paramsType[0], "elements_type" : paramsType[1] });
 
   }, 0);
+}
+function getComparisonHash(n, array_type, elements_type) {
+  var sort_data = Sort.averageValues;
+  var temp_array = [];
+
+  for(var sort in sort_data) {
+    var sort_time = 0, sort_recursive_time = 0;
+
+    if(elements_type) {
+      sort_time = sort_data[sort][n][array_type][elements_type - 1];
+      if (sort_data[sort].hasOwnProperty("recursive"))
+        sort_recursive_time = sort_data[sort]["recursive"][n][array_type][elements_type - 1];
+    }
+    else {
+      for(var type = 0; type < 3; type++) {
+        sort_time += sort_data[sort][n][array_type][type];
+        if (sort_data[sort].hasOwnProperty("recursive"))
+          sort_recursive_time += sort_data[sort]["recursive"][n][array_type][type];
+      }
+    }
+
+    temp_array.push([parseFloat(sort_time), Sort.humanize_sort_name(sort)]);
+    if (sort_data[sort].hasOwnProperty("recursive"))
+      temp_array.push([parseFloat(sort_recursive_time), Sort.humanize_sort_name(sort + "_recursive")]);
+  }
+  temp_array.sort(function(a, b) {
+    a = a[0];
+    b = b[0];
+
+    return a < b ? -1 : (a > b ? 1 : 0);
+  });
+
+  var hash = {};
+  hash["names"] = [];
+  hash["values"] = [];
+  for(var sort in temp_array) {
+    hash["values"].push(temp_array[sort][0]);
+    hash["names"].push(temp_array[sort][1]);
+  }
+  hash["elements_type"] = elements_type;
+  hash["array_type"] = array_type;
+
+  return hash;
 }
