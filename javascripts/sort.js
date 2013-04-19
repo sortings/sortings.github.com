@@ -56,6 +56,14 @@ Sort.humanize_array_elements_type = function (elements_type) {
 Sort.prototype = {
 
   bindSortsComparison : function() {
+    var $content_blocks = $('.inner-content'), block_counter = 0;
+    for(var type in Sort.array_types_names) {
+      createComparisonBlock($content_blocks.eq(block_counter), type);
+      block_counter += 1;
+      draw_comparison(type + "-comparison", 100, getComparisonHash(100, type, 0));
+      if ($content_blocks.length <= block_counter)
+        break;
+    }
     $('.elements-type-select, .array-type-select').on('change', function (){
       var current_comparison_type = $(this).parent().siblings('.algo-stat').attr('id');
 
@@ -71,9 +79,6 @@ Sort.prototype = {
                       array_capacity,
                       getComparisonHash(array_capacity, current_comparison_type.split('-')[0], parseInt(array_elements_type)));
     });
-    for(var type in Sort.array_types_names) {
-      draw_comparison(type + "-comparison", 100, getComparisonHash(100, "from0to9", 0));
-    }
   },
 
   bindSortStat : function() {
