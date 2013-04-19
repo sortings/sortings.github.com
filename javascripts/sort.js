@@ -246,6 +246,8 @@ function getAverage() {
   var average = [];
   var amount = 0;
   for(var i in a) {
+    if(i == "radix")
+      break;
     var sum = 0, sum2 = 0;
     for(var j in a[i]) {
       if(j != "recursive")
