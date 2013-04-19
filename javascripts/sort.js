@@ -77,8 +77,11 @@ Sort.prototype = {
 
       draw_comparison(current_comparison_type,
                       array_capacity,
-                      getComparisonHash(array_capacity, current_comparison_type.split('-')[0], parseInt(array_elements_type)));
+                      getComparisonHash(array_capacity,
+                        current_comparison_type.split('-')[0],
+                        parseInt(array_elements_type)));
     });
+    draw_pie('pie-comparison', getAverage());
   },
 
   bindSortStat : function() {
@@ -135,7 +138,6 @@ function isReady(sortParams) {
     if (typeof sortParams["is_recursive"] == 'undefined') {
       draw_column(sortParams["n"] + "_stat", sortParams["n"], sortParams["func_name"]);
       updateStatTable(sortParams["n"] + "_stat", sortParams["n"], sortParams["func_name"]);
-      //console.log(sortParams["n"] + ": { from0to9 : [" + Sort.averageValues[funcName][params.length]["from0to9"][0] + ", " + Sort.averageValues[funcName][params.length]["from0to9"][1] + ", " + Sort.averageValues[funcName][params.length]["from0to9"][2] +"], integers : [" + Sort.averageValues[funcName][params.length]["integers"][0] + ", " + Sort.averageValues[funcName][params.length]["integers"][1] + ", " + Sort.averageValues[funcName][params.length]["integers"][2] + "], strings : [" + Sort.averageValues[funcName][params.length]["strings"][0] + ", " + Sort.averageValues[funcName][params.length]["strings"][1] + ", " + Sort.averageValues[funcName][params.length]["strings"][2] + "], dates: [" + Sort.averageValues[funcName][params.length]["dates"][0] + ", " + Sort.averageValues[funcName][params.length]["dates"][1] + ", " + Sort.averageValues[funcName][params.length]["dates"][2] + "] }");
     }
     else {
       draw_lines('recursive-comparison');
@@ -239,6 +241,50 @@ function benchmark(funcName, params, paramsType, isRecursive) {
 
   }, 0);
 }
+function getAverage() {
+  var a = Sort.averageValues;
+  var average = [];
+  var amount = 0;
+  for(var i in a) {
+    var sum = 0, sum2 = 0;
+    for(var j in a[i]) {
+      if(j != "recursive")
+      {
+        for(var m in a[i][j]) {
+          for (var data in a[i][j][m])
+          {
+            if (typeof a[i][j][m][data] == "number")
+              sum += a[i][j][m][data]
+          }
+        }
+      }
+      else {
+
+        for(var k in a[i][j]) {
+          for(var m in a[i][j][k]) {
+            for (var data in a[i][j][k][m])
+            {
+              if (typeof a[i][j][k][m][data] == "number")
+                sum2 += a[i][j][k][m][data]
+            }
+          }
+        }
+
+      }
+    }
+    if (sum > 0)
+      average.push([i, sum]);
+    if (sum2 > 0)
+      average.push([i + "_recursive", sum2]);
+    amount += sum + sum2;
+  }
+  var coef = amount/100;
+  for (var i in average) {
+    average[i][0] = Sort.humanize_sort_name(average[i][0]);
+    average[i][1] /= coef;
+  }
+  return average;
+}
 function getComparisonHash(n, array_type, elements_type) {
   var sort_data = Sort.averageValues;
   var temp_array = [];
@@ -248,19 +294,27 @@ function getComparisonHash(n, array_type, elements_type) {
 
     if(elements_type) {
       sort_time = sort_data[sort][n][array_type][elements_type - 1];
-      if (sort_data[sort].hasOwnProperty("recursive"))
+      sort_time = typeof sort_time == "number" ? sort_time : -1;
+      if (sort_data[sort].hasOwnProperty("recursive")) {
         sort_recursive_time = sort_data[sort]["recursive"][n][array_type][elements_type - 1];
+        sort_recursive_time = typeof sort_recursive_time == "number" ? sort_recursive_time : -1;
+      }
     }
     else {
       for(var type = 0; type < 3; type++) {
-        sort_time += sort_data[sort][n][array_type][type];
+        sort_time += typeof sort_data[sort][n][array_type][type] == "number" ?
+                        sort_data[sort][n][array_type][type] :
+                        0;
         if (sort_data[sort].hasOwnProperty("recursive"))
-          sort_recursive_time += sort_data[sort]["recursive"][n][array_type][type];
+          sort_recursive_time += typeof sort_data[sort]["recursive"][n][array_type][type] == "number" ?
+                                    sort_data[sort]["recursive"][n][array_type][type] :
+                                    0;
       }
     }
 
-    temp_array.push([parseFloat(sort_time), Sort.humanize_sort_name(sort)]);
-    if (sort_data[sort].hasOwnProperty("recursive"))
+    if (sort_time > 0)
+      temp_array.push([parseFloat(sort_time), Sort.humanize_sort_name(sort)]);
+    if (sort_data[sort].hasOwnProperty("recursive") && sort_recursive_time > 0)
       temp_array.push([parseFloat(sort_recursive_time), Sort.humanize_sort_name(sort + "_recursive")]);
   }
   temp_array.sort(function(a, b) {
