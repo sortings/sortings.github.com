@@ -16,13 +16,13 @@ Sort.humanize_sort_name = function (sort_name) {
       humanized = "Пузырьком";
       break
     case "merge":
-      humanized = "Слиянием";
+      humanized = "Слиянием (рекурсивная)";
       break
     case "shell":
       humanized = "Шелла";
       break
     case "quick":
-      humanized = "Быстрая";
+      humanized = "Быстрая (рекурсивная)";
       break
     case "heap":
       humanized = "Пирамидальная";
@@ -32,7 +32,7 @@ Sort.humanize_sort_name = function (sort_name) {
       break
   };
   if (sort_name.split('_').length > 1)
-    humanized += " (рекурсивная)";
+    humanized = humanized.split(' ')[0];
   return humanized;
 }
 Sort.humanize_array_elements_type = function (elements_type) {
@@ -122,7 +122,7 @@ Sort.prototype = {
 function isReady(sortParams) {
   var end = window.performance.now();
   var time = end - sortParams["start"];
-  time += (time == 0) ? Math.random() : 0;
+  //time += (time == 0) ? Math.random() * 0.001 : 0;
 
   if (typeof sortParams["is_recursive"] == 'undefined')
     Sort.averageValues[ sortParams["func_name"] ][ sortParams["n"] ][ sortParams["array_type"] ][ sortParams["elements_type"] ] = time;

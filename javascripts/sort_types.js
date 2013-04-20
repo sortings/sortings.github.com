@@ -10,21 +10,8 @@ Sort.bubble = function(data, sortParams)
       }
   isReady(sortParams);
 };
-Sort.bubble_recursive = function(data, sortParams)
-{
-  for (var i=0;i<data.length-1;i++) {
-    if (data[i] > data[i+1] ) {
-      var tmp = data[i];
-      data[i] = data[i+1];
-      data[i+1] = tmp;
-      setTimeout(Sort.bubble_recursive, 0, data, sortParams);
-      return;
-    }
-  }
-  isReady(sortParams);
-};
 /* слиянием */
-Sort.merge_recursive = function(items, sortParams) {
+Sort.merge = function(items, sortParams) {
   Sort.merge_recursive_help(items);
   isReady(sortParams);
 }
@@ -52,7 +39,7 @@ Sort.merge_help = function(left, right) {
   }
   return result.concat(left).concat(right);
 }
-Sort.merge = function(items, sortParams) {
+Sort.merge_recursive = function(items, sortParams) {
   if (items.length == 1) {
     return items;
   }
@@ -114,7 +101,7 @@ Sort.shell = function(array, sortParams)
   isReady(sortParams);
 }
 /* быстрая */
-Sort.quick = function(input, sortParams) {
+Sort.quick_recursive = function(input, sortParams) {
   var stack = new Array();
   var pivot;
   var pivotIndex = 0;
@@ -199,7 +186,7 @@ Sort.swap = function(items, firstIndex, secondIndex){
     items[firstIndex] = items[secondIndex];
     items[secondIndex] = temp;
 }
-Sort.quick_recursive = function(items, sortParams, left, right) {
+Sort.quick = function(items, sortParams, left, right) {
   var index;
 
   if (items.length > 1) {
@@ -210,11 +197,11 @@ Sort.quick_recursive = function(items, sortParams, left, right) {
     index = Sort.partition(items, left, right);
 
     if (left < index - 1) {
-      Sort.quick_recursive(items, sortParams, left, index - 1);
+      Sort.quick(items, sortParams, left, index - 1);
     }
 
     if (index < right) {
-      Sort.quick_recursive(items, sortParams, index, right);
+      Sort.quick(items, sortParams, index, right);
     }
   }
   if(index == items.length-1)

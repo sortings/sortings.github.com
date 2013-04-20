@@ -75,7 +75,7 @@ function draw_lines(id, isComputed) {
           type: 'line'
       },
       title: {
-          text: 'Нерекурсивная VS рекурсивной'
+          text: 'Рекурсивная VS нерекурсивной'
       },
       subtitle: {
           text: typeof isComputed !== 'undefined' ? 'При проведении серии испытаний' : 'Лишь единичное испытание для каждого вида (ради демонстрации)'
@@ -104,7 +104,7 @@ function draw_lines(id, isComputed) {
           }
       },
       series: [{
-          name: 'Нерекурсивная',
+          name: 'Рекурсивная',
           data: [
                   Sort.averageValues[sortName][100][Sort.selectedArrayType][Sort.selectedElementType],
                   Sort.averageValues[sortName][500][Sort.selectedArrayType][Sort.selectedElementType],
@@ -112,7 +112,7 @@ function draw_lines(id, isComputed) {
                   Sort.averageValues[sortName][50000][Sort.selectedArrayType][Sort.selectedElementType]
                 ]
       }, {
-          name: 'Рекурсивная',
+          name: 'Нерекурсивная',
           data: [
                   Sort.averageValues[sortName]["recursive"][100][Sort.selectedArrayType][Sort.selectedElementType],
                   Sort.averageValues[sortName]["recursive"][500][Sort.selectedArrayType][Sort.selectedElementType],

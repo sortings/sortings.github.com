@@ -128,39 +128,7 @@
           <h4>Испытания</h4>
           <div id="experiments"></div>
 
-          <h4>Сравнение с рекурсивной формой</h4>
-          <div class="algo-stat-block">
-            <div id="recursive-comparison" class="algo-stat"></div>
-            <div class="algo-stat-table-block" style="text-align: center; height: 20px;">
-              <h1 class="computing">Вычисление...</h1>
-              <span>Массивы из </span>
-              <select class="elements-type-select">
-                <option value="0">случайно сгенерированных</option>
-                <option value="1">правильно упорядоченных</option>
-                <option value="2">обратно упорядоченных</option>
-              </select>
-              <select class="array-type-select">
-                <option value="from0to9">цифр (от 0 до 9)</option>
-                <option value="integers">целых чисел</option>
-                <option value="strings">строк</option>
-                <option value="dates">дат</option>
-              </select>
-              <span> емкостью в </span>
-              <span><input type="checkbox" id="recursion-capacity-100" checked>100</span>
-              <span style="color:#daa520;"><input type="checkbox" id="recursion-capacity-500">500</span>
-              <span style="color:red;"><input type="checkbox" id="recursion-capacity-5000">5000</span>
-              <span style="color:red;"><input type="checkbox" id="recursion-capacity-50000">50000</span>
-            </div>
-            <br>
-            <div class="submit">
-              <input class="recursive-comparison" name="commit" type="submit" value="Пересчитать выбранный тип **">
-            </div>
-            <div class="separator"></div>
-          </div>
-
           <p style="font-size: 13px;">* - некоторые испытания требуют значительного времени, так что нажимая на эту кнопку, вы действуете на свой срах и риск ;) А все потому, что в Javascript многопоточность в явном виде не представлена, т.е. сортировки проходят последовательно. Подробнее про это почитать можно <a style="color: navy;" href="http://javascript.info/tutorial/events-and-timing-depth">здесь</a>.</p>
-
-          <p style="font-size: 13px;">** - чтобы не возникало переполнение стека вызовов, выделенного для нас браузером, для рекусрсивных функций использую косвенные вызовы. Возможно, не совсем честно, но других способов нет. В противном случае же хром (с максимальным размером стека среди популярных браузеров) крашился бы уже при сортировке пузырьком сложного массива размером более <a style="color: navy;" href="http://javascriptrules.com/2009/06/30/limitation-on-call-stacks/">150 элементов</a>.</p>
         </div>
       </div>
     </div>
