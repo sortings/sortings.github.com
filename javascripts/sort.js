@@ -122,7 +122,7 @@ Sort.prototype = {
 function isReady(sortParams) {
   var end = window.performance.now();
   var time = end - sortParams["start"];
-  //time += (time == 0) ? Math.random() * 0.001 : 0;
+  time += (time == 0) ? Math.random() * 0.0001 : 0;
 
   if (typeof sortParams["is_recursive"] == 'undefined')
     Sort.averageValues[ sortParams["func_name"] ][ sortParams["n"] ][ sortParams["array_type"] ][ sortParams["elements_type"] ] = time;
@@ -134,7 +134,7 @@ function isReady(sortParams) {
   if(Sort.readyCount == 0)
   {
     console.log("ready!")
-    console.log(JSON.stringify(Sort.averageValues))
+    console.log("Sort.averageValues = " + JSON.stringify(Sort.averageValues))
     if (typeof sortParams["is_recursive"] == 'undefined') {
       draw_column(sortParams["n"] + "_stat", sortParams["n"], sortParams["func_name"]);
       updateStatTable(sortParams["n"] + "_stat", sortParams["n"], sortParams["func_name"]);
