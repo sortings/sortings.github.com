@@ -11,7 +11,7 @@ function createComparisonBlock (elem, sort) {
                 '<select class="array-type-select">' +
                 '<option value="100">100</option>' +
                 '<option value="500">500</option>' +
-                '<option value="5000">5000</option>' +
+                '<option value="5000" selected>5000</option>' +
                 '<option value="50000">50000</option>' +
                 '</select>' +
                 '<span> элементов</span>' +

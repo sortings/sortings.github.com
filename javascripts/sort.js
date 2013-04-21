@@ -60,7 +60,7 @@ Sort.prototype = {
     for(var type in Sort.array_types_names) {
       createComparisonBlock($content_blocks.eq(block_counter), type);
       block_counter += 1;
-      draw_comparison(type + "-comparison", 100, getComparisonHash(100, type, 0));
+      draw_comparison(type + "-comparison", 5000, getComparisonHash(5000, type, 0));
       if ($content_blocks.length <= block_counter)
         break;
     }
@@ -247,7 +247,7 @@ function getAverage() {
   var amount = 0;
   for(var i in a) {
     if(i == "radix")
-      break;
+      continue;
     var sum = 0, sum2 = 0;
     for(var j in a[i]) {
       if(j != "recursive")

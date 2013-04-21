@@ -244,42 +244,38 @@ Sort.radix = function(arr, sortParams)
   isReady(sortParams);
 }
 /* пирамидальная */
-Sort.heap = function(a, sortParams)
+Sort.SiftDown = function(heap, i, n)
 {
-  var n = a.length, i, sh = 0, b = 0;
-  while (1)
+  var nMax = i;
+  var value = heap[i];
+  while ( true )
   {
-    b = 0;
-    for (i = 0; i < n; ++i)
-    {
-      if (i*2 + 2 + sh < n)
-      {
-        if (a[i+sh] > a[i*2 + 1 + sh] || a[i + sh] > a[i*2 + 2 + sh])
-        {
-          if (a[i*2+1+sh] < a[i*2+2+sh])
-          {
-            Sort.swap(a, i+sh, i*2+1+sh);
-            b = 1;
-          }
-          else if (a[i*2+2+sh] < a[i*2+1+sh])
-          {
-            Sort.swap(a, i+sh, i*2+2+sh);
-            b = 1;
-          }
-        }
-      }
-      else if (i * 2 + 1 + sh < n)
-      {
-        if (a[i+sh] > a[i*2+1+sh])
-        {
-          Sort.swap(a, i+sh, i*2+1+sh);
-          b = 1;
-        }
-      }
-    }
-    if (!b) sh +=1;
-    if (sh+2 == n)
-      break;
+    var childN = i*2+1;
+    if ( ( childN < n ) && ( heap[childN] > value      ) )
+        nMax = childN;
+
+    ++childN;
+    if ( ( childN < n ) && ( heap[childN] > heap[nMax] ) )
+        nMax = childN;
+    if ( nMax == i ) break;
+    heap[i] = heap[nMax]; heap[nMax] = value;
+    i = nMax;
+  };
+}
+Sort.heap = function(heap, sortParams)
+{
+  var n = heap.length;
+  for(var i = n/2-1; i>=0; --i) Sort.SiftDown(heap, i, n);
+
+  while( n > 1 )
+  {
+    --n;
+
+    var firstElem = heap[0];
+    heap[0] = heap[n];
+    heap[n] = firstElem;
+
+    Sort.SiftDown(heap, 0, n);
   }
   isReady(sortParams);
 }

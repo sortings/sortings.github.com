@@ -62,7 +62,19 @@
         <div class="description">
           <h4>Описание</h4>
           <p>
-            &nbsp;&nbsp;Один из быстрых известных универсальных алгоритмов сортировки массивов (в среднем O(n log n) обменов при упорядочении n элементов), хотя и имеющий ряд недостатков.
+            &nbsp;&nbsp;Один из быстрых известных универсальных алгоритмов сортировки массивов (в среднем O(n log n) обменов при упорядочении n элементов). Является существенно улучшенным вариантом алгоритма сортировки с помощью прямого обмена. Принципиальное отличие состоит в том, что после каждого прохода элементы делятся на две независимые группы.
+          </p>
+          <p>
+            Лучший случай:
+            <br>
+            Если в каждой итерации каждый из подмассивов делился бы на два равных по величине массива
+            <span class="array-example">4 1 3 2 6 5 7</span>
+          </p>
+          <p>
+            Худший случай:
+            <br>
+            Если на каждом этапе массив будет разделяться на вырожденный подмассив из одного опорного элемента и на подмассив из всех остальных элементов
+            <span class="array-example">0 1 2 3 4 5 6 7 8 9 2 5 1 6 3 7 0 8 4 9</span>
           </p>
 
           <h4>Оценка сложности</h4>
@@ -89,68 +101,6 @@
           <div class="code">
             <div class="js">
               <script type="syntaxhighlighter" class="brush: js"><![CDATA[
-                  function q_sort(input)
-                  {
-                      var stack = new Array();
-                      var pivot;
-                      var pivotIndex = 0;
-                      var leftIndex = pivotIndex + 1;
-                      var rightIndex = input.length - 1;
-
-                      stack.push(pivotIndex);
-                      stack.push(rightIndex);
-
-                      var leftIndexOfSubSet, rightIndexOfSubset;
-
-                      while (stack.length > 0)
-                      {
-                          rightIndexOfSubset = parseInt(stack.pop());
-                          leftIndexOfSubSet = parseInt(stack.pop());
-
-                          leftIndex = leftIndexOfSubSet + 1;
-                          pivotIndex = leftIndexOfSubSet;
-                          rightIndex = rightIndexOfSubset;
-
-                          pivot = input[pivotIndex];
-
-                          if (leftIndex > rightIndex)
-                              continue;
-
-                          while (leftIndex < rightIndex)
-                          {
-                              while ((leftIndex <= rightIndex) && (input[leftIndex] <= pivot))
-                                  leftIndex++;
-
-                              while ((leftIndex <= rightIndex) && (input[rightIndex] >= pivot))
-                                  rightIndex--;
-
-                              if (rightIndex >= leftIndex)
-                                  SwapElement(input, leftIndex, rightIndex);
-                          }
-
-                          if (pivotIndex <= rightIndex)
-                              if( input[pivotIndex] > input[rightIndex])
-                                  SwapElement(input, pivotIndex, rightIndex);
-
-                          if (leftIndexOfSubSet < rightIndex)
-                          {
-                              stack.push(leftIndexOfSubSet);
-                              stack.push(rightIndex - 1);
-                          }
-
-                          if (rightIndexOfSubset > rightIndex)
-                          {
-                              stack.push(rightIndex + 1);
-                              stack.push(rightIndexOfSubset);
-                          }
-                      }
-                  }
-                  function SwapElement(arr, left, right)
-                  {
-                      var temp = arr[left];
-                      arr[left] = arr[right];
-                      arr[right] = temp;
-                  }
                 ]]></script>
             </div>
             <div class="cs" style="display:none;">
@@ -191,6 +141,13 @@
             <br>
             <div class="submit">
               <input class="recursive-comparison" name="commit" type="submit" value="Пересчитать выбранный тип">
+            </div>
+            <div class="conclusion">
+              <div>
+                <p>
+                  &nbsp;&nbsp;На упорядоченных (частично или обратно) массивах, нерекурсивная форма примерно в 2-4 раза медленнее, чем рекурсивная. Но, иногда, когда массив из большого количества случайных величин вынуждает рекурсивную форму совершать множество рекурсивных вызовов и сложных сравнений (например, строк или больших чисел), нерекурсивная форма вполне может выигрывать.
+                </p>
+              </div>
             </div>
             <div class="separator"></div>
           </div>
