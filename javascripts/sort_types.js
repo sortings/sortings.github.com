@@ -210,7 +210,7 @@ Sort.quick = function(items, sortParams, left, right) {
 /* поразрядная */
 Sort.insert = function(arr, i, j)
 {
-  tmp = arr[i];
+  var tmp = arr[i];
   arr.splice(i, 1);
   arr.splice(j, 0, tmp);
 }

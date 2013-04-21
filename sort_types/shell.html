@@ -95,6 +95,12 @@
             </tr>
           </table>
 
+          <h4>Лучший случай</h4>
+          <p>Массив уже отсортирован в правильном порядке. Количество сравнений в таком случае наименьшее</p>
+
+          <h4>Худший случай</h4>
+          <p>Если неправильно выбраны промежутки</p>
+
           <h4>Код</h4>
           <div class="tabnav">
             <ul class="tabnav-tabs">
@@ -148,36 +154,36 @@
             <div class="cs" style="display:none;">
               <script type="syntaxhighlighter" class="brush: csharp"><![CDATA[
                   int increment(int[] inc) {
-                    int p1 = p2 = p3 = 1, s = -1;
-                    do {
-                      if (++s % 2) {
-                        inc[s] = 8*p1 - 6*p2 + 1;
-                      }
-                      else {
-                        inc[s] = 9*p1 - 9*p3 + 1;
-                        p2 *= 2;
-                        p3 *= 2;
-                      }
-                      p1 *= 2;
-                    } while(3*inc[s] < inc.Length);
+                      int p1 = p2 = p3 = 1, s = -1;
+                      do {
+                          if (++s % 2) {
+                              inc[s] = 8*p1 - 6*p2 + 1;
+                          }
+                          else {
+                              inc[s] = 9*p1 - 9*p3 + 1;
+                              p2 *= 2;
+                              p3 *= 2;
+                          }
+                          p1 *= 2;
+                      } while(3*inc[s] < inc.Length);
 
-                    return s > 0 ? --s : 0;
+                      return s > 0 ? --s : 0;
                   }
                   void shellSort(int[] a) {
-                    int inc, i, j;
-                    int[] seq = new int[40];
+                      int inc, i, j;
+                      int[] seq = new int[40];
 
-                    int s = increment(seq);
-                    while (s >= 0) {
-                      inc = seq[s--];
+                      int s = increment(seq);
+                      while (s >= 0) {
+                          inc = seq[s--];
 
-                      for (i = inc; i < a.Length; i++) {
-                        int temp = a[i];
-                        for (j = i-inc; (j >= 0) && (a[j] > temp); j -= inc)
-                          a[j+inc] = a[j];
-                        a[j+inc] = temp;
+                          for (i = inc; i < a.Length; i++) {
+                              int temp = a[i];
+                              for (j = i-inc; (j >= 0) && (a[j] > temp); j -= inc)
+                                  a[j+inc] = a[j];
+                              a[j+inc] = temp;
+                          }
                       }
-                    }
                   }
                 ]]></script>
             </div>

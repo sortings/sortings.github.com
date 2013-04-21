@@ -312,6 +312,8 @@ function getComparisonHash(n, array_type, elements_type) {
                                     sort_data[sort]["recursive"][n][array_type][type] :
                                     0;
       }
+      sort_time /= 3;
+      sort_recursive_time /= 3;
     }
 
     if (sort_time > 0)

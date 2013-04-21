@@ -62,7 +62,10 @@
         <div class="description">
           <h4>Описание</h4>
           <p>
-            &nbsp;&nbsp;Числа сортируются по разрядам. Существует два варианта least significant digit (LSD) и most significant digit (MSD). При LSD сортировке, сначала сортируются младшие разряды, затем старшие. При MSD сортировке все наоборот. При LSD сортировке получается следующий порядок: короткие ключи идут раньше длинных, ключи одного размера сортируются по алфавиту, это совпадает с нормальным представлением чисел: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10. При MSD сортировке получается алфавитный порядок, который подходит для сортировки строк. Например "b, c, d, e, f, g, h, i, j, ba" отсортируется как "b, ba, c, d, e, f, g, h, i, j". Если MSD применить к числам разной длины, то получим последовательность 1, 10, 2, 3, 4, 5, 6, 7, 8, 9.
+            &nbsp;&nbsp;Один из алгоритмов, которые не используют сравнение элементов массива. Сначала элементы сортируются по своему младшему(последнему) разряду, затем следующему(предпоследнему) и т.д. до старшего разряда, первого.<br>
+            До сортировки необходимо знать два параметра: k и d, где:<br>
+            k - количество разрядов в самом длинном ключе<br>
+            d - разрядность данных: количество возможных значений разряда ключа
           </p>
 
           <h4>Оценка сложности</h4>
@@ -89,10 +92,70 @@
           <div class="code">
             <div class="js">
               <script type="syntaxhighlighter" class="brush: js"><![CDATA[
+                  function insert(arr, i, j)
+                  {
+                      tmp = arr[i];
+                      arr.splice(i, 1);
+                      arr.splice(j, 0, tmp);
+                  }
+                  function radix(arr)
+                  {
+                      var bit, end, i, mask;
+                      bit = 0;
+                      while(true)
+                      {
+                          mask = 1 << bit;
+                          i = 0;
+                          end = arr.length;
+                          while(i < end)
+                          {
+                              if(arr[i] & mask)
+                              {
+                                insert(arr, i, arr.length - 1);
+                                end--;
+                              }
+                              else
+                              {
+                                i++;
+                              }
+                          }
+                          bit++;
+                          if(end === arr.length)
+                          {
+                             break;
+                          }
+                      }
+                  }
                 ]]></script>
             </div>
             <div class="cs" style="display:none;">
               <script type="syntaxhighlighter" class="brush: csharp"><![CDATA[
+                  public static void sorting(int[] arr, int range, int length)
+                  {
+                      List<List<int>> lists = new List<List<int>>(range);
+                      for (int i = 0; i < range; ++i)
+                          lists.Add(new List<int>());
+
+                      for (int step = 0; step < length; ++step)
+                      {
+                          for (int i = 0; i < arr.Length; ++i)
+                          {
+                              int temp = (arr[i] % (int)Math.Pow(range, step + 1)) /
+                                                            (int)Math.Pow(range, step);
+                              lists[temp].Add(arr[i]);
+                          }
+                          int k = 0;
+                          for (int i = 0; i < range; ++i)
+                          {
+                              for (int j = 0; j < lists[i].Count; ++j)
+                              {
+                                  arr[k++] = (int)lists[i][j];
+                              }
+                          }
+                          for (int i = 0; i < range; ++i)
+                              lists[i].Clear();
+                      }
+                  }
                 ]]></script>
             </div>
           </div>
