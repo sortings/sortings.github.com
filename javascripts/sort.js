@@ -60,7 +60,7 @@ Sort.prototype = {
     for(var type in Sort.array_types_names) {
       createComparisonBlock($content_blocks.eq(block_counter), type);
       block_counter += 1;
-      draw_comparison(type + "-comparison", 5000, getComparisonHash(5000, type, 0));
+      draw_comparison(type + "-comparison", 500, getComparisonHash(500, type, 0));
       if ($content_blocks.length <= block_counter)
         break;
     }
