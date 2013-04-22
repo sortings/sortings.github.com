@@ -130,7 +130,13 @@ Sort.prototype = {
   }
 }
 function isReady(sortParams) {
-  var end = window.performance.now();
+  var end;
+  try {
+    end = window.performance.now();
+  }
+  catch(e) {
+    end = new Date().getTime();
+  }
   var time = end - sortParams["start"];
   time += (time == 0) ? Math.random() * 0.0001 : 0;
 
@@ -242,8 +248,13 @@ function capacityTests(sortName, n, onlyDigits)
 function benchmark(funcName, params, paramsType, isRecursive) {
 
   setTimeout(function () {
-    var start = window.performance.now();
-
+    var start;
+    try {
+      start = window.performance.now();
+    }
+    catch(e) {
+      start = new Date().getTime();
+    }
     if (typeof isRecursive == 'undefined')
       Sort[funcName](params, { "start" : start, "func_name" : funcName, "n" : params.length, "array_type" : paramsType[0], "elements_type" : paramsType[1] });
     else
