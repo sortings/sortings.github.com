@@ -117,6 +117,16 @@ Sort.prototype = {
       Sort.selectedArrayType = $('.array-type-select').val();
       draw_lines("recursive-comparison", true);
     });
+    $( ".array-example" ).each(function( example ) {
+      var array = $(this).text().split(' ');
+      $(this).empty();
+      var table = '<table><tr>';
+      for (var item in array) {
+        table += '<td>' + array[item] + '</td>';
+      }
+      table +=  '</tr></table>';
+      $(this).append(table);
+    });
   }
 }
 function isReady(sortParams) {
@@ -130,11 +140,11 @@ function isReady(sortParams) {
     Sort.averageValues[ sortParams["func_name"] ][ "recursive" ][ sortParams["n"] ][ sortParams["array_type"] ][ sortParams["elements_type"] ] = time;
 
   Sort.readyCount -= 1;
-  console.log(time)
+  //console.log(time)
   if(Sort.readyCount == 0)
   {
-    console.log("ready!")
-    console.log("Sort.averageValues = " + JSON.stringify(Sort.averageValues))
+    //console.log("ready!")
+    //console.log("Sort.averageValues = " + JSON.stringify(Sort.averageValues))
     if (typeof sortParams["is_recursive"] == 'undefined') {
       draw_column(sortParams["n"] + "_stat", sortParams["n"], sortParams["func_name"]);
       updateStatTable(sortParams["n"] + "_stat", sortParams["n"], sortParams["func_name"]);

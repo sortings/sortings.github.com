@@ -58,7 +58,7 @@ div.announcements_link a {
 }
 header div.global_links {
   opacity: 1.0;
-  left: 255px;
+  left: 170px;
   text-align: left;
   position: absolute;
   top: 34px;
@@ -361,4 +361,23 @@ h1.computing {
   margin: 0px;
   text-shadow: #f7f6f2 1px 1px 0;
   font: 14px/12px Georgia, "Times New Roman", Times, serif;
+}
+.announcements_link {
+  display: none;
+}
+.yet-logo {
+  width: 50%;
+  margin: 0 auto;
+  text-indent: -9000px;
+  height: 34px;
+  width: 138px;
+  background: url('../images/logo.png') no-repeat center top;
+}
+.separator-line {
+  border-bottom: 1px solid #dedede;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.array-example td{
+  border: 1px solid #DDD;
 }
